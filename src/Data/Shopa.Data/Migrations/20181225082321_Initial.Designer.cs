@@ -5,14 +5,12 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Shopa.Data;
-using Shopa.Web.Models;
 
-namespace Shopa.Web.Migrations
+namespace Shopa.Data.Migrations
 {
     [DbContext(typeof(ShopaDbContext))]
-    [Migration("20181225004600_Initia2")]
-    partial class Initia2
+    [Migration("20181225082321_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

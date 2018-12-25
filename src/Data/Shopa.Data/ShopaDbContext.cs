@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Shopa.Web.Areas.Identity.Data;
+using Shopa.Data.Models;
 
-namespace Shopa.Web.Models
+namespace Shopa.Data
 {
     public class ShopaDbContext : IdentityDbContext<ShopaUser>
     {

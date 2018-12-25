@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Shopa.Web.Areas.Identity.Data;
+using Shopa.Data.Models;
 
 namespace Shopa.Web.Areas.Identity.Pages.Account.Manage
 {

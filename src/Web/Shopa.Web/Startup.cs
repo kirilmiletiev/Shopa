@@ -11,7 +11,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Shopa.Web.Areas.Identity.Data;
+using Shopa.Data;
+using Shopa.Data.Models;
 using Shopa.Web.Models;
 
 namespace Shopa.Web

@@ -9,7 +9,10 @@ namespace Shopa.Data
         public ShopaDbContext(DbContextOptions<ShopaDbContext> options)
             : base(options)
         {
+            
         }
+
+        public DbSet<Product> Products { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

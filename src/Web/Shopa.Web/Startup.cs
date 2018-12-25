@@ -9,9 +9,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Shopa.Web.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Shopa.Web.Areas.Identity.Data;
+using Shopa.Web.Models;
 
 namespace Shopa.Web
 {
@@ -34,11 +35,28 @@ namespace Shopa.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddDbContext<ApplicationDbContext>(options =>
+            services.Configure<IdentityOptions>(optinons =>
+            {
+                optinons.SignIn.RequireConfirmedEmail = false;
+                optinons.Password.RequiredLength = 6;
+                optinons.Password.RequireLowercase = false;
+                optinons.Password.RequireNonAlphanumeric = false;
+                optinons.Password.RequireLowercase = false;
+                optinons.Password.RequireUppercase = false;
+                optinons.Password.RequiredUniqueChars = 0;
+            });
+            //services.AddDbContext<ApplicationDbContext>(options =>
+            //    options.UseSqlServer(
+            //        Configuration.GetConnectionString("DefaultConnection")));
+            //services.AddDefaultIdentity<IdentityUser>()
+            //    .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddDbContext<ShopaDbContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                    this.Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddDefaultIdentity<ShopaUser>()
+                .AddEntityFrameworkStores<ShopaDbContext>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

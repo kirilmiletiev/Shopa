@@ -11,8 +11,11 @@ namespace Shopa.Data.Models
             this.Products = new List<Product>();
         }
 
+        public decimal TotalPrice { get; set; } 
+
         public ICollection<Product> Products { get; set; }
 
+        public ShopaUser User { get; set; }
 
     }
 }

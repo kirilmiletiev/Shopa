@@ -36,16 +36,16 @@ namespace Shopa.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.Configure<IdentityOptions>(optinons =>
-            {
-                optinons.SignIn.RequireConfirmedEmail = false;
-                optinons.Password.RequiredLength = 6;
-                optinons.Password.RequireLowercase = false;
-                optinons.Password.RequireNonAlphanumeric = false;
-                optinons.Password.RequireLowercase = false;
-                optinons.Password.RequireUppercase = false;
-                optinons.Password.RequiredUniqueChars = 0;
-            });
+            //services.Configure<IdentityOptions>(optinons =>
+            //{
+            //    optinons.SignIn.RequireConfirmedEmail = false;
+            //    optinons.Password.RequiredLength = 6;
+            //    optinons.Password.RequireLowercase = false;
+            //    optinons.Password.RequireNonAlphanumeric = false;
+            //    optinons.Password.RequireLowercase = false;
+            //    optinons.Password.RequireUppercase = false;
+            //    optinons.Password.RequiredUniqueChars = 0;
+            //});
             //services.AddDbContext<ApplicationDbContext>(options =>
             //    options.UseSqlServer(
             //        Configuration.GetConnectionString("DefaultConnection")));
@@ -55,8 +55,21 @@ namespace Shopa.Web
             services.AddDbContext<ShopaDbContext>(options =>
                 options.UseSqlServer(
                     this.Configuration.GetConnectionString("DefaultConnection")));
+            
+           // services.AddDefaultIdentity<>()
 
-            services.AddDefaultIdentity<ShopaUser>()
+            services.AddIdentity<ShopaUser, IdentityRole>(options =>
+                {
+                    options.SignIn.RequireConfirmedEmail = false;
+                    options.Password.RequiredLength = 6;
+                    options.Password.RequireLowercase = false;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireLowercase = false;
+                    options.Password.RequireUppercase = false;
+                    options.Password.RequiredUniqueChars = 0;
+                })
+                .AddRoleManager<RoleManager<IdentityRole>>()
+                .AddDefaultUI()
                 .AddEntityFrameworkStores<ShopaDbContext>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);

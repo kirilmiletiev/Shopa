@@ -14,7 +14,7 @@ namespace Shopa.Data.Models
            
         }
 
-        public string Address { get; set; } 
+        public string Address { get; set; }
 
         public ICollection<Product> Products { get; set; }
 

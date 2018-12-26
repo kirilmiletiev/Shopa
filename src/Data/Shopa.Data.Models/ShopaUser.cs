@@ -10,7 +10,11 @@ namespace Shopa.Data.Models
         public ShopaUser()
         {
             this.Products = new List<Product>();
+
+           
         }
+
+        public string Address { get; set; } 
 
         public ICollection<Product> Products { get; set; }
 

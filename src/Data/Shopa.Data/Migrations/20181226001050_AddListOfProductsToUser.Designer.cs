@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shopa.Data;
 
 namespace Shopa.Data.Migrations
 {
     [DbContext(typeof(ShopaDbContext))]
-    partial class ShopaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181226001050_AddListOfProductsToUser")]
+    partial class AddListOfProductsToUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -143,11 +145,11 @@ namespace Shopa.Data.Migrations
 
                     b.Property<decimal>("Price");
 
-                    b.Property<string>("UserId");
+                    b.Property<string>("ShopaUserId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("ShopaUserId");
 
                     b.ToTable("Products");
                 });
@@ -250,9 +252,9 @@ namespace Shopa.Data.Migrations
 
             modelBuilder.Entity("Shopa.Data.Models.Product", b =>
                 {
-                    b.HasOne("Shopa.Data.Models.ShopaUser", "User")
+                    b.HasOne("Shopa.Data.Models.ShopaUser")
                         .WithMany("Products")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("ShopaUserId");
                 });
 #pragma warning restore 612, 618
         }

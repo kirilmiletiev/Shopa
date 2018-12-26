@@ -9,6 +9,7 @@ namespace Shopa.Data.Models
         public string Description { get; set; }
 
         public decimal Price { get; set; }
-        
+
+        public ShopaUser User { get; set; } 
     }
 }

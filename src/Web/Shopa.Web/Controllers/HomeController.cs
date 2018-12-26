@@ -14,6 +14,13 @@ namespace Shopa.Web.Controllers
     {
         private UserManager<ShopaUser> userManager;
         private RoleManager<IdentityRole> roleManager;
+
+        public HomeController(RoleManager<IdentityRole> roleManager, UserManager<ShopaUser> userManager)
+        {
+            this.roleManager = roleManager;
+            this.userManager = userManager;
+        }
+
         public IActionResult Index()
         {
             return View();

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Shopa.Data.Models.Enums;
 
 namespace Shopa.Data.Models
 {
@@ -9,6 +10,7 @@ namespace Shopa.Data.Models
         public Product()
         {
             this.TimeOfCreation = DateTime.UtcNow;
+            this.Reviews = new List<Review>();
         }
 
         public string Description { get; set; }
@@ -22,5 +24,7 @@ namespace Shopa.Data.Models
         public string PictureLocalPath { get; set; }
 
         public Store Store { get; set; }
+
+        public ICollection<Review> Reviews { get; set; }    
     }
 }

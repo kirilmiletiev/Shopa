@@ -70,6 +70,7 @@ namespace Shopa.Web
                 })
                 .AddRoleManager<RoleManager<IdentityRole>>()
                 .AddDefaultUI()
+                .AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<ShopaDbContext>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);

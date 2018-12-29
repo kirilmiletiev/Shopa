@@ -6,6 +6,7 @@ namespace Shopa.Data.Models
 {
     public class Store : BaseModel<int>
     {
+        //TODO : Promotions of some of products
         //public Store(Dictionary<Product, int> quantity, List<Order> orders)
         //{
         //    Quantity = quantity;
@@ -20,6 +21,8 @@ namespace Shopa.Data.Models
             this.Users = new List<ShopaUser>();
         }
 
+        
+
         //public IDictionary<Product, int> Quantity { get; set; }
         public ICollection<Quantity> Quantity { get; set; }
 
@@ -27,7 +30,7 @@ namespace Shopa.Data.Models
 
         public ICollection<Order> Orders { get; set; }
 
-        public ICollection<ShopaUser> Users { get; set; }   
+        public ICollection<ShopaUser> Users { get; set; }
 
         public Balance Balance { get; set; }
     }

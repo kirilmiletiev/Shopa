@@ -139,8 +139,6 @@ namespace Shopa.Data.Migrations
 
                     b.Property<decimal>("Outcome");
 
-                    b.Property<decimal>("Rent");
-
                     b.Property<decimal>("Revenue");
 
                     b.Property<decimal>("Taxes");
@@ -150,6 +148,29 @@ namespace Shopa.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Balances");
+                });
+
+            modelBuilder.Entity("Shopa.Data.Models.Enums.Review", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("ProductId");
+
+                    b.Property<int>("Rating");
+
+                    b.Property<string>("Text");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Review");
                 });
 
             modelBuilder.Entity("Shopa.Data.Models.Order", b =>
@@ -346,6 +367,17 @@ namespace Shopa.Data.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Shopa.Data.Models.Enums.Review", b =>
+                {
+                    b.HasOne("Shopa.Data.Models.Product", "Product")
+                        .WithMany("Reviews")
+                        .HasForeignKey("ProductId");
+
+                    b.HasOne("Shopa.Data.Models.ShopaUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Shopa.Data.Models.Order", b =>

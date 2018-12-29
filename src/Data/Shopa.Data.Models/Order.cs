@@ -19,7 +19,9 @@ namespace Shopa.Data.Models
 
         public ShopaUser User { get; set; }
 
-        public OrderStatus Status { get; set; } 
+        public OrderStatus Status { get; set; }
+
+        public Store Store { get; set; }    
 
     }
 }

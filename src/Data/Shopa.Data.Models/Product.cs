@@ -18,5 +18,9 @@ namespace Shopa.Data.Models
         public ShopaUser User { get; set; }
 
         public DateTime TimeOfCreation { get; set; }
+
+        public string PictureLocalPath { get; set; }
+
+        public Store Store { get; set; }
     }
 }

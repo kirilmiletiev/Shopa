@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Shopa.Data.Models;
+using Shopa.Data.Models.Enums;
 
 namespace Shopa.Data
 {
@@ -21,6 +22,12 @@ namespace Shopa.Data
         public DbSet<Quantity> Quantities { get; set; }
 
         public DbSet<Balance> Balances { get; set; }
+
+        public DbSet<Review> Reviews { get; set; }
+
+
+
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

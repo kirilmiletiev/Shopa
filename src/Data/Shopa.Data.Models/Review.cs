@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Shopa.Data.Models.Enums;
 
-namespace Shopa.Data.Models.Enums
+namespace Shopa.Data.Models
 {
    public class Review : BaseModel<int>
     {

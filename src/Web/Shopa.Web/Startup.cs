@@ -35,17 +35,7 @@ namespace Shopa.Web
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-
-            //services.Configure<IdentityOptions>(optinons =>
-            //{
-            //    optinons.SignIn.RequireConfirmedEmail = false;
-            //    optinons.Password.RequiredLength = 6;
-            //    optinons.Password.RequireLowercase = false;
-            //    optinons.Password.RequireNonAlphanumeric = false;
-            //    optinons.Password.RequireLowercase = false;
-            //    optinons.Password.RequireUppercase = false;
-            //    optinons.Password.RequiredUniqueChars = 0;
-            //});
+            
             //services.AddDbContext<ApplicationDbContext>(options =>
             //    options.UseSqlServer(
             //        Configuration.GetConnectionString("DefaultConnection")));

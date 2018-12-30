@@ -20,9 +20,7 @@ namespace Shopa.Data.Models
             this.Orders = new List<Order>();
             this.Users = new List<ShopaUser>();
         }
-
         
-
         //public IDictionary<Product, int> Quantity { get; set; }
         public ICollection<Quantity> Quantity { get; set; }
 

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shopa.Data;
 
 namespace Shopa.Data.Migrations
 {
     [DbContext(typeof(ShopaDbContext))]
-    partial class ShopaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181230084047_AddDecimalDataAnnotationForEFCoreAll")]
+    partial class AddDecimalDataAnnotationForEFCoreAll
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

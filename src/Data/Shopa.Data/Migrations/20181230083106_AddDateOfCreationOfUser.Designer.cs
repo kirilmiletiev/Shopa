@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shopa.Data;
 
 namespace Shopa.Data.Migrations
 {
     [DbContext(typeof(ShopaDbContext))]
-    partial class ShopaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181230083106_AddDateOfCreationOfUser")]
+    partial class AddDateOfCreationOfUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -135,23 +137,15 @@ namespace Shopa.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<decimal>("Bills")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<decimal>("Bills");
 
-                    b.Property<decimal>("Outcome")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<decimal>("Outcome");
 
-                    b.Property<decimal>("Rent")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<decimal>("Revenue");
 
-                    b.Property<decimal>("Revenue")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<decimal>("Taxes");
 
-                    b.Property<decimal>("Taxes")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("WorkerSalaries")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<decimal>("WorkerSalaries");
 
                     b.HasKey("Id");
 
@@ -216,8 +210,7 @@ namespace Shopa.Data.Migrations
 
                     b.Property<string>("PictureLocalPath");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<decimal>("Price");
 
                     b.Property<int?>("StoreId");
 
@@ -244,8 +237,7 @@ namespace Shopa.Data.Migrations
 
                     b.Property<int>("Amount");
 
-                    b.Property<decimal>("LastBuyPrice")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<decimal>("LastBuyPrice");
 
                     b.Property<int?>("ProductId");
 

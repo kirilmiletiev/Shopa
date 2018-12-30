@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
+using Shopa.Data.Models.Enums;
 
 namespace Shopa.Data.Models
 {
@@ -11,7 +13,8 @@ namespace Shopa.Data.Models
         {
             this.Products = new List<Product>();
             this.Orders = new List<Order>();
-
+            this.Reviews = new List<Review>();
+            this.DateOfRegistration = DateTime.UtcNow;
         }
 
         public string Address { get; set; }
@@ -19,6 +22,12 @@ namespace Shopa.Data.Models
         public ICollection<Product> Products { get; set; }
 
         public ICollection<Order> Orders { get; set; }
+
+        public DateTime DateOfRegistration { get; set; }
+
+        public ICollection<Review> Reviews { get; set; }
+
+        public string PicturePath { get; set; }
         //public Product Product { get; set; }
 
 

@@ -5,9 +5,11 @@ using System.Linq;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Pages.Internal.Account.Manage;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Shopa.Data;
 using Shopa.Data.Models;
 
 namespace Shopa.Web.Areas.Identity.Pages.Account.Manage
@@ -17,15 +19,19 @@ namespace Shopa.Web.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<ShopaUser> _userManager;
         private readonly SignInManager<ShopaUser> _signInManager;
         private readonly IEmailSender _emailSender;
+        private ShopaDbContext Context { get; set; }
+
 
         public IndexModel(
             UserManager<ShopaUser> userManager,
             SignInManager<ShopaUser> signInManager,
-            IEmailSender emailSender)
+            IEmailSender emailSender, 
+            ShopaDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
+            Context = context;
         }
 
         public string Username { get; set; }
@@ -47,6 +53,10 @@ namespace Shopa.Web.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
+            
+            [Display(Name = "Address")]
+            public string Address { get; set; }
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -60,13 +70,16 @@ namespace Shopa.Web.Areas.Identity.Pages.Account.Manage
             var userName = await _userManager.GetUserNameAsync(user);
             var email = await _userManager.GetEmailAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            var address = user.Address;
 
             Username = userName;
+            //this.Input.Address = address;
 
             Input = new InputModel
             {
                 Email = email,
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                Address = address
             };
 
             IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
@@ -109,6 +122,18 @@ namespace Shopa.Web.Areas.Identity.Pages.Account.Manage
                 }
             }
 
+           // var address = user.Address;
+
+            if (Input.Address != user.Address)
+            {
+                user.Address = Input.Address;
+              var a =  Context.SaveChangesAsync();
+               //await _userManager.UpdateAsync(user);
+                var update = _userManager.UpdateAsync(user).GetAwaiter().GetResult();
+                
+            }
+
+            //TODO: REFRESH ADDRESS!
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
             return RedirectToPage();

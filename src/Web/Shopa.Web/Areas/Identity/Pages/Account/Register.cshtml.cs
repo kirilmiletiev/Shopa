@@ -55,6 +55,17 @@ namespace Shopa.Web.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+
+            [Display(Name = "Phone Number")]
+            [DataType(DataType.PhoneNumber)]
+            public string PhoneNumber { get; set; }
+
+
+
+            [Display(Name = "Address")]
+            [StringLength(250, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            public string Address { get; set; }
         }
 
         public void OnGet(string returnUrl = null)
@@ -67,7 +78,7 @@ namespace Shopa.Web.Areas.Identity.Pages.Account
             returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
-                var user = new ShopaUser { UserName = Input.Email, Email = Input.Email };
+                var user = new ShopaUser { UserName = Input.Email, Email = Input.Email, Address = Input.Address, PhoneNumber = Input.PhoneNumber, AccessFailedCount = 8};
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

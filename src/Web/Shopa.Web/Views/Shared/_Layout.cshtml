@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using Shopa.Data.Models
+@inject UserManager<ShopaUser> UserManager
+@inject SignInManager<ShopaUser> SignInManager
+@inject RoleManager<IdentityRole> RoleManager
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -33,6 +39,23 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                            
+                    @*TEST*@
+                    @{
+                        var currentUser = await UserManager.GetUserAsync(this.User);
+
+                        if (currentUser != null)
+                        {
+                            var isSignedIn =  this.User.Identity.IsAuthenticated;
+                            if (await UserManager.IsInRoleAsync(currentUser, "Admin"))
+                            {
+                                <li><a asp-area="" asp-controller="Home" asp-action="Contact">Admin Pannel</a></li>
+                                //TODO: Here must be admin area.
+                            }
+                        }
+                    }
+                    @*TEST*@
+
                 </ul>
                 <partial name="_LoginPartial" />
             </div>

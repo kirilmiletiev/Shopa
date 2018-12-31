@@ -1,4 +1,5 @@
-﻿using Shopa.Data.Models.Enums;
+﻿using Shopa.Data.Models;
+using Shopa.Data.Models.Enums;
 
 namespace Shopa.Data.Models
 {

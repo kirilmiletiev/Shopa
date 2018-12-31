@@ -158,29 +158,6 @@ namespace Shopa.Data.Migrations
                     b.ToTable("Balances");
                 });
 
-            modelBuilder.Entity("Shopa.Data.Models.Enums.Review", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("ProductId");
-
-                    b.Property<int>("Rating");
-
-                    b.Property<string>("Text");
-
-                    b.Property<string>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Reviews");
-                });
-
             modelBuilder.Entity("Shopa.Data.Models.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -221,8 +198,6 @@ namespace Shopa.Data.Migrations
 
                     b.Property<int?>("StoreId");
 
-                    b.Property<DateTime>("TimeOfCreation");
-
                     b.Property<string>("UserId");
 
                     b.HasKey("Id");
@@ -260,6 +235,31 @@ namespace Shopa.Data.Migrations
                     b.HasIndex("StoreId");
 
                     b.ToTable("Quantities");
+                });
+
+            modelBuilder.Entity("Shopa.Data.Models.Review", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ProductId");
+
+                    b.Property<int>("Rating");
+
+                    b.Property<string>("Text");
+
+                    b.Property<int>("UserId");
+
+                    b.Property<string>("UserId1");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId1");
+
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("Shopa.Data.Models.ShopaUser", b =>
@@ -383,17 +383,6 @@ namespace Shopa.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Shopa.Data.Models.Enums.Review", b =>
-                {
-                    b.HasOne("Shopa.Data.Models.Product", "Product")
-                        .WithMany("Reviews")
-                        .HasForeignKey("ProductId");
-
-                    b.HasOne("Shopa.Data.Models.ShopaUser", "User")
-                        .WithMany("Reviews")
-                        .HasForeignKey("UserId");
-                });
-
             modelBuilder.Entity("Shopa.Data.Models.Order", b =>
                 {
                     b.HasOne("Shopa.Data.Models.Store", "Store")
@@ -429,6 +418,18 @@ namespace Shopa.Data.Migrations
                     b.HasOne("Shopa.Data.Models.Store", "Store")
                         .WithMany("Quantity")
                         .HasForeignKey("StoreId");
+                });
+
+            modelBuilder.Entity("Shopa.Data.Models.Review", b =>
+                {
+                    b.HasOne("Shopa.Data.Models.Product", "Product")
+                        .WithMany("Reviews")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Shopa.Data.Models.ShopaUser", "User")
+                        .WithMany("Reviews")
+                        .HasForeignKey("UserId1");
                 });
 
             modelBuilder.Entity("Shopa.Data.Models.ShopaUser", b =>

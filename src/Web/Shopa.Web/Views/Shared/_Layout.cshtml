@@ -49,7 +49,7 @@
                             var isSignedIn =  this.User.Identity.IsAuthenticated;
                             if (await UserManager.IsInRoleAsync(currentUser, "Admin"))
                             {
-                                <li><a asp-area="" asp-controller="Home" asp-action="Contact">Admin Pannel</a></li>
+                                <li><a asp-area="" asp-controller="Products" asp-action="">Admin Pannel</a></li>
                                 //TODO: Here must be admin area.
                             }
                         }

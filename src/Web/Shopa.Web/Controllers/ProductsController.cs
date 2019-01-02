@@ -61,31 +61,31 @@ namespace Shopa.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                //var path = product.PictureLocalPath;
-                //path = path.Replace('\\', '/');
-                //string result = "";
-                //var count = 0;
+                var path = product.PictureLocalPath;
+                path = path.Replace('\\', '/');
+                string result = "";
+                var count = 0;
 
-                //string str = "";
+                string str = "";
 
-                //for (int i = path.Length - 1; i >= 0; i--)
-                //{
-                //    if (path[i].Equals('/'))
-                //    {
-                //        count++;
-                //    }
+                for (int i = path.Length - 1; i >= 0; i--)
+                {
+                    if (path[i].Equals('/'))
+                    {
+                        count++;
+                    }
 
-                //    str += (path[i]);
+                    if (count == 2)
+                    {
+                        break;
+                    }
 
-                //    if (count == 2)
-                //    {
-                //        break;
-                //    }
-                //}
+                    str += (path[i]);
+                }
 
-                //result = Reverse(str);
-                //result.Replace('/', '\\');
-                //product.PictureLocalPath = result;
+                result = Reverse(str);
+                result.Replace('/', '\\');
+                product.PictureLocalPath = result;
 
                 _context.Add(product);
                 await _context.SaveChangesAsync();

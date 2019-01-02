@@ -10,7 +10,7 @@ namespace Shopa.Data.Models
     {
         public Product()
         {
-          //  this.TimeOfCreation = DateTime.UtcNow;
+            this.TimeOfCreation = DateTime.UtcNow;
             this.Reviews = new List<Review>();
         }
 
@@ -21,7 +21,7 @@ namespace Shopa.Data.Models
 
         public ShopaUser User { get; set; }
 
-        public DateTime TimeOfCreation => DateTime.UtcNow;
+        public DateTime TimeOfCreation { get; set; }
 
         public string PictureLocalPath { get; set; }
 

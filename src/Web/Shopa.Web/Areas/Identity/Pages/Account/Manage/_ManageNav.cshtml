@@ -1,7 +1,4 @@
-﻿
-@using Shopa.Data.Models
-
-@inject SignInManager<ShopaUser> SignInManager
+﻿@inject SignInManager<ShopaUser> SignInManager
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
 }

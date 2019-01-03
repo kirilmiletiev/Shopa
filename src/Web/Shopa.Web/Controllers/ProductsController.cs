@@ -57,7 +57,7 @@ namespace Shopa.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Description,Price,TimeOfCreation,PictureLocalPath,Id")] Product product)
+        public async Task<IActionResult> Create([Bind("Description,Price,TimeOfCreation,PictureLocalPath,Id, Category")] Product product)
         {
             if (ModelState.IsValid)
             {

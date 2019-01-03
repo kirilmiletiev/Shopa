@@ -16,4 +16,8 @@
     <ProjectReference Include="..\..\Data\Shopa.Data\Shopa.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pages\" />
+  </ItemGroup>
+
 </Project>

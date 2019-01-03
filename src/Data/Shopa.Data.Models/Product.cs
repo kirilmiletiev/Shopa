@@ -22,11 +22,13 @@ namespace Shopa.Data.Models
         public ShopaUser User { get; set; }
 
         public DateTime TimeOfCreation { get; set; }
-
+            
         public string PictureLocalPath { get; set; }
 
         public Store Store { get; set; }
 
         public ICollection<Review> Reviews { get; set; }
+
+        public Categories Category { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 using Shopa.Data.Models.Enums;
 
@@ -13,6 +14,7 @@ namespace Shopa.Data.Models
             this.Status = OrderStatus.Pending;
         }
 
+        [Column(TypeName = "decimal(18,2)")]
         public decimal TotalPrice { get; set; } 
 
         public ICollection<Product> Products { get; set; }

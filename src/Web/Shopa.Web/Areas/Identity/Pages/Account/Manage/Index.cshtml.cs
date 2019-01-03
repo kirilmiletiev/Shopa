@@ -47,6 +47,9 @@ namespace Shopa.Web.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
+            [Display(Name = "Address")]
+            public string Address { get; set; }
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -60,13 +63,16 @@ namespace Shopa.Web.Areas.Identity.Pages.Account.Manage
             var userName = await _userManager.GetUserNameAsync(user);
             var email = await _userManager.GetEmailAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            var address = user.Address;
 
             Username = userName;
 
             Input = new InputModel
             {
                 Email = email,
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                Address = address
+                
             };
 
             IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
@@ -107,6 +113,15 @@ namespace Shopa.Web.Areas.Identity.Pages.Account.Manage
                     var userId = await _userManager.GetUserIdAsync(user);
                     throw new InvalidOperationException($"Unexpected error occurred setting phone number for user with ID '{userId}'.");
                 }
+            }
+
+            if (Input.Address != user.Address)
+            {
+                user.Address = Input.Address;
+               // var a = Context.SaveChangesAsync();
+                await _userManager.UpdateAsync(user);
+               // var update = _userManager.UpdateAsync(user).GetAwaiter().GetResult();
+
             }
 
             await _signInManager.RefreshSignInAsync(user);

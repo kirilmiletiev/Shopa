@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Shopa.Data.Models;
 using Shopa.Web.Models;
+using Shopa.Web.Services;
+using Shopa.Web.Services.Contracts;
 
 namespace Shopa.Web.Controllers
 {
@@ -14,11 +16,13 @@ namespace Shopa.Web.Controllers
     {
         private UserManager<ShopaUser> userManager;
         private RoleManager<IdentityRole> roleManager;
+        private IHomeService homeService;
 
-        public HomeController(RoleManager<IdentityRole> roleManager, UserManager<ShopaUser> userManager)
+        public HomeController(RoleManager<IdentityRole> roleManager, UserManager<ShopaUser> userManager, IHomeService homeService)
         {
             this.roleManager = roleManager;
             this.userManager = userManager;
+            this.homeService = homeService;
         }
 
         public IActionResult Index()

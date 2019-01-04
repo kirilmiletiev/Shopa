@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <Folder Include="Pages\" />
+    <Folder Include="Views\VIewModels\" />
   </ItemGroup>
 
 </Project>

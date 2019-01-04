@@ -25,28 +25,28 @@
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             @*<div class="form-group">
-            <label asp-for="TimeOfCreation" class="control-label"></label>
-            <input asp-for="TimeOfCreation" class="form-control" />
-            <span asp-validation-for="TimeOfCreation" class="text-danger"></span>
-        </div>*@
+                    <label asp-for="TimeOfCreation" class="control-label"></label>
+                    <input asp-for="TimeOfCreation" class="form-control" />
+                    <span asp-validation-for="TimeOfCreation" class="text-danger"></span>
+                </div>*@
 
 
             @*<div class="form-group">
-            <label asp-for="PictureLocalPath" class="control-label"></label>
-            <input asp-for="PictureLocalPath" class="form-control" />
-            <span asp-validation-for="PictureLocalPath" class="text-danger"></span>
-        </div>*@
+                    <label asp-for="PictureLocalPath" class="control-label"></label>
+                    <input asp-for="PictureLocalPath" class="form-control" />
+                    <span asp-validation-for="PictureLocalPath" class="text-danger"></span>
+                </div>*@
 
             <div class="form-group">
                 <label asp-for="Category">Select Category:</label><br />
-                <select name="Category" asp-items="Html.GetEnumSelectList<Categories>()"></select><br />
-                <span asp-validation-for="Category" class="text-danger" />
+                <select name="Category" asp-items="Html.GetEnumSelectList<Categories>()"></select>
+                <span asp-validation-for="Category" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <div>
-                    <input asp-for="PictureLocalPath" type="file" class="form-control" />
-                </div>
+                <label asp-for="PictureLocalPath"></label>
+                <input asp-for="PictureLocalPath" type="file" class="form-control"/>
+                <span asp-validation-for="PictureLocalPath" class="text-danger"></span>
             </div>
             <br />
 

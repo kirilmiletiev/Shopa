@@ -1,12 +1,44 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@page
+@using Shopa.Data
+@using Shopa.Data.Models
+@using Shopa.Web.Services.Contracts
+@{
+//ViewData["Title"] = "Home Page";
 }
 
-<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
+@inject IHomeService HomeService;
+@inject ShopaDbContext Context;
+
+<div class="form-group">
+    <a> Hello, there is @HomeService.GetAllProducts().Count products in the app and @Context.Users.Count() registered users.</a>
+
+    <h3>Products List</h3>
+    <table class="table-bordered col-lg-10">
+        <tr>
+            <th>Id</th>
+            <th>Category</th>
+            <th>Photo</th>
+            <th>Price</th>
+            <th>Description</th>
+        </tr>
+        @foreach (var product in HomeService.GetAllProducts().ToList())
+        {
+            <tr>
+                <td>@product.Id</td>
+                <td>@product.Category</td>
+                <td><img src="@product.PictureLocalPath" width="60" alt="pic" /></td>
+                <td>@product.Price</td>
+                <td>@product.Description</td>
+            </tr>
+        }
+    </table>
+</div>
+<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="2000">
     <ol class="carousel-indicators">
         <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
         <li data-target="#myCarousel" data-slide-to="1"></li>
         <li data-target="#myCarousel" data-slide-to="2"></li>
+        <li data-target="#myCarousel" data-slide-to="3"></li>
     </ol>
     <div class="carousel-inner" role="listbox">
         <div class="item active">
@@ -42,6 +74,23 @@
                 </p>
             </div>
         </div>
+
+        <div class="item">
+
+            @{ var randomProduct = HomeService.GetRandomProduct(); }
+            <img src="@randomProduct.PictureLocalPath" alt="Mercedes" class="img-responsive" />
+            <div class="carousel-caption" role="option">
+                <p>@HomeService.CategoryName(randomProduct)</p>
+                <p>@randomProduct.Price $</p>
+                <p>@randomProduct.Description</p>
+                <p>
+                    <a class="btn btn-default" asp-controller="Products" asp-action="Details" asp-route-id="@randomProduct.Id">
+                        Learn More
+                    </a>
+                </p>
+            </div>
+        </div>
+
     </div>
     <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
         <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>

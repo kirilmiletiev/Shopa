@@ -12,7 +12,6 @@ using Shopa.Data.Models;
 
 namespace Shopa.Web.Controllers
 {
-    [Authorize(Roles = "Admin")]
     public class ProductsController : Controller
     {
         private readonly ShopaDbContext _context;
@@ -23,12 +22,14 @@ namespace Shopa.Web.Controllers
         }
 
         // GET: Products
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Products.ToListAsync());
         }
 
-        // GET: Products/Details/5
+        // GET: Products/Details/
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -47,6 +48,7 @@ namespace Shopa.Web.Controllers
         }
 
         // GET: Products/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
@@ -57,7 +59,8 @@ namespace Shopa.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Description,Price,TimeOfCreation,PictureLocalPath,Id, Category")] Product product)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Create([Bind("Description,Price,TimeOfCreation,PictureLocalPath,Id, Category, User")] Product product)
         {
             if (ModelState.IsValid)
             {
@@ -95,6 +98,7 @@ namespace Shopa.Web.Controllers
         }
 
         // GET: Products/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -115,6 +119,7 @@ namespace Shopa.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("Description,Price,TimeOfCreation,PictureLocalPath,Id")] Product product)
         {
             if (id != product.Id)
@@ -146,6 +151,7 @@ namespace Shopa.Web.Controllers
         }
 
         // GET: Products/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -163,7 +169,9 @@ namespace Shopa.Web.Controllers
             return View(product);
         }
 
+
         // POST: Products/Delete/5
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

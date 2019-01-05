@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -15,10 +16,12 @@ namespace Shopa.Web.Controllers
     public class ProductsController : Controller
     {
         private readonly ShopaDbContext _context;
+        private UserManager<ShopaUser> userManager;
 
-        public ProductsController(ShopaDbContext context)
+        public ProductsController(ShopaDbContext context, UserManager<ShopaUser> userManager)
         {
             _context = context;
+            this.userManager = userManager;
         }
 
         // GET: Products
@@ -89,6 +92,7 @@ namespace Shopa.Web.Controllers
                 result = Reverse(str);
                 result.Replace('/', '\\');
                 product.PictureLocalPath = result;
+                product.User = this.userManager.GetUserAsync(this.User).GetAwaiter().GetResult();
 
                 _context.Add(product);
                 await _context.SaveChangesAsync();

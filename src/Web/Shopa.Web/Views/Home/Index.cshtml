@@ -48,7 +48,14 @@
             <div class="carousel-caption" role="option">
                 <p>@HomeService.CategoryName(randomProduct1)</p>
                 <p>@randomProduct1.Price $</p>
-                <p>@randomProduct1.Description</p>
+                @if (randomProduct1.Description.Length > 30)
+                {
+                <p>@string.Join("", randomProduct1.Description.Take(30)) ...</p>
+                }
+                else
+                {
+                    <p>@randomProduct1.Description</p>
+                }
                 <p>
                     <a class="btn btn-default" asp-controller="Products" asp-action="Details" asp-route-id="@randomProduct1.Id">
                         Learn More
@@ -64,7 +71,14 @@
             <div class="carousel-caption" role="option">
                 <p>@HomeService.CategoryName(randomProduct2)</p>
                 <p>@randomProduct2.Price $</p>
-                <p>@randomProduct2.Description</p>
+                @if (randomProduct2.Description.Length > 30)
+                {
+                <p>@string.Join("", randomProduct2.Description.Take(30)) ...</p>
+                }
+                else
+                {
+                    <p>@randomProduct2.Description</p>
+                }
                 <p>
                     <a class="btn btn-default" asp-controller="Products" asp-action="Details" asp-route-id="@randomProduct2.Id">
                         Learn More
@@ -80,7 +94,14 @@
             <div class="carousel-caption" role="option">
                 <p>@HomeService.CategoryName(randomProduct3)</p>
                 <p>@randomProduct3.Price $</p>
-                <p>@randomProduct3.Description</p>
+                @if (randomProduct3.Description.Length > 30)
+                {
+                <p>@string.Join("", randomProduct3.Description.Take(30)) ...</p>
+                }
+                else
+                {
+                    <p>@randomProduct3.Description</p>
+                }
                 <p>
                     <a class="btn btn-default" asp-controller="Products" asp-action="Details" asp-route-id="@randomProduct3.Id">
                         Learn More
@@ -96,7 +117,14 @@
             <div class="carousel-caption" role="option">
                 <p>@HomeService.CategoryName(randomProduct4)</p>
                 <p>@randomProduct4.Price $</p>
-                <p>@randomProduct4.Description</p>
+                @if (randomProduct4.Description.Length > 30)
+                {
+                    <p>@string.Join("", randomProduct4.Description.Take(30)) ...</p>
+                }
+                else
+                {
+                    <p>@randomProduct4.Description</p>
+                }
                 <p>
                     <a class="btn btn-default" asp-controller="Products" asp-action="Details" asp-route-id="@randomProduct4.Id">
                         Learn More

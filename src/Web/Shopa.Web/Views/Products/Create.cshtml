@@ -39,7 +39,7 @@
 
             <div class="form-group">
                 <label asp-for="Category">Select Category:</label><br />
-                <select name="Category" asp-items="Html.GetEnumSelectList<Categories>()"></select>
+                <select name="Category" asp-items="Html.GetEnumSelectList<Category>()"></select>
                 <span asp-validation-for="Category" class="text-danger"></span>
             </div>
 

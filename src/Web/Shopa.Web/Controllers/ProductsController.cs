@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Shopa.Data;
 using Shopa.Data.Models;
+using Shopa.Data.Models.Enums;
 
 namespace Shopa.Web.Controllers
 {
@@ -27,6 +28,17 @@ namespace Shopa.Web.Controllers
         // GET: Products
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
+        {
+            return View(await _context.Products.ToListAsync());
+        }
+            
+        public async Task<IActionResult> GetAllProductsByCategories(Category category)
+        {
+            return View(await _context.Products.Where(x => x.Category == category).ToListAsync());
+        }
+
+
+        public async Task<IActionResult> GetAllProducts()
         {
             return View(await _context.Products.ToListAsync());
         }

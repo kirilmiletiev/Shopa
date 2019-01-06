@@ -1,6 +1,6 @@
 ﻿namespace Shopa.Data.Models.Enums
 {
-    public enum Categories
+    public enum Category
     {
         Clothes = 1,
         Home = 2,

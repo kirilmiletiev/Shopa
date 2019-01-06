@@ -1,0 +1,33 @@
+﻿@model System.Collections.Generic.List<Shopa.Data.Models.Product>
+
+@{
+    ViewBag.Title = "Products By Categories";
+    Layout = "_Layout";
+}
+
+<h2>Products By Categories</h2>
+
+
+<div >
+    <h3>Products List</h3>
+    <table class="table-bordered col-lg-12">
+        <tr>
+            @*<th>Id</th>*@
+            <th>Category</th>
+            <th>Photo</th>
+            <th>Price</th>
+            <th>Description</th>
+        </tr>
+        @foreach (var product in Model)
+        {
+            <tr>
+                @*<td>@product.Id</td>*@
+                <td>@product.Category</td>
+                <td><img src="/@product.PictureLocalPath" width="60" alt="pic" /></td>
+                <td>@product.Price</td>
+                <td>@product.Description</td>
+            </tr>
+        }
+    </table>
+    <br/>
+</div>

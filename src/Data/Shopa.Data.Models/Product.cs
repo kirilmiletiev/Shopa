@@ -29,6 +29,6 @@ namespace Shopa.Data.Models
 
         public ICollection<Review> Reviews { get; set; }
 
-        public Categories Category { get; set; }
+        public Category Category { get; set; }
     }
 }

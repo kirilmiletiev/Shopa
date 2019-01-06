@@ -1,0 +1,105 @@
+﻿@using Shopa.Data.Models.Enums
+@model System.Collections.Generic.List<Shopa.Data.Models.Product>
+
+@{
+    ViewBag.Title = "All Products";
+    Layout = "_Layout";
+}
+
+<h2>All Products</h2>
+<h4>Select Category</h4>
+
+
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th> @(this.Model.Select(x => x.Category).Where(x => x == Category.Clothes))</th>
+            </tr>
+
+            <tr>
+                <th> @(this.Model.Select(x => x.Category).Where(x => x == Category.Home))</th>
+            </tr>
+            <tr>
+                <th> @(this.Model.Select(x => x.Category).Where(x => x == Category.Garden))</th>
+            </tr>
+            <tr>
+                <th> @(this.Model.Select(x => x.Category).Where(x => x == Category.Jars))</th>
+            </tr>
+            <tr>
+                <th> @(this.Model.Select(x => x.Category).Where(x => x == Category.Yarn))</th>
+            </tr>
+            <tr>
+                <th> @(this.Model.Select(x => x.Category).Where(x => x == Category.Electronics))</th>
+            </tr>
+            <tr>
+                <th> @(this.Model.Select(x => x.Category).Where(x => x == Category.AutoProducts))</th>
+            </tr>
+            <tr>
+                <th> @(this.Model.Select(x => x.Category).Where(x => x == Category.Shoes))</th>
+            </tr>
+            <tr>
+                <th> @(this.Model.Select(x => x.Category).Where(x => x == Category.Promotions))</th>
+            </tr>
+            <tr>
+                <th> @(this.Model.Select(x => x.Category).Where(x => x == Category.Other))</th>
+            </tr>
+        </thead>
+    </table>
+    
+
+</div>
+
+
+@*<table class="table">
+    <thead>
+    <tr>
+        <th>
+            @product.Description
+
+        </th>
+        <th>
+            @product.Price
+        </th>
+        <th>
+            @product.TimeOfCreation
+        </th>
+        <th>
+            @product.PictureLocalPath
+        </th>
+        <th>
+            @product.Category
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @product.Description
+            </td>
+            <td>
+                @product.Price
+            </td>
+            <td>
+                @product.TimeOfCreation
+            </td>
+            <td>
+               
+                <img src="@item.PictureLocalPath" alt="pic" width="150" height="150" />
+                </td>
+                <td>
+                    @product.Category
+                </td>
+
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+                </tr>
+                }
+                </tbody>
+                </table>*@

@@ -39,14 +39,14 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-                            
+
                     @*TEST*@
                     @{
                         var currentUser = await UserManager.GetUserAsync(this.User);
 
                         if (currentUser != null)
                         {
-                            var isSignedIn =  this.User.Identity.IsAuthenticated;
+                            var isSignedIn = this.User.Identity.IsAuthenticated;
                             if (await UserManager.IsInRoleAsync(currentUser, "Admin"))
                             {
                                 <li><a asp-area="" asp-controller="Products" asp-action="Index">Admin Panel</a></li>
@@ -55,23 +55,35 @@
                         }
                     }
                     @*TEST*@
-                   
-                   
+
+
 
                 </ul>
-                <div class="navbar sidenav" style="resize: both">
-                    <a asp-controller="Home" asp-action="Index">Index</a>
-                    <a asp-controller="Home" asp-action="About">About</a>
-                    <a asp-controller="Home" asp-action="Contact">Index</a>
+                <div>
+                    <ul class="nav sidenav">
+
+                        <li><a asp-controller="Products" asp-action="GetAllProductsByCategories" asp-route-category="Clothes">Clothes</a></li>
+                        <li><a asp-controller="Products" asp-action="GetAllProductsByCategories" asp-route-category="Home">Home</a></li>
+                        <li><a asp-controller="Products" asp-action="GetAllProductsByCategories" asp-route-category="Garden">Garden</a></li>
+                        <li><a asp-controller="Products" asp-action="GetAllProductsByCategories" asp-route-category="Jars">Jars</a></li>
+                        <li><a asp-controller="Products" asp-action="GetAllProductsByCategories" asp-route-category="Yarn">Yarn</a></li>
+                        <li><a asp-controller="Products" asp-action="GetAllProductsByCategories" asp-route-category="Electronics">Electronics</a></li>
+                        <li><a asp-controller="Products" asp-action="GetAllProductsByCategories" asp-route-category="AutoProducts">AutoProducts</a></li>
+                        <li><a asp-controller="Products" asp-action="GetAllProductsByCategories" asp-route-category="Shoes">Shoes</a></li>
+                        <li><a asp-controller="Products" asp-action="GetAllProductsByCategories" asp-route-category="Promotions">Promotions</a></li>
+                        <li><a asp-controller="Products" asp-action="GetAllProductsByCategories" asp-route-category="Other">Other</a></li>
+
+                    </ul>
                 </div>
+
                 <partial name="_LoginPartial" />
             </div>
-            
+
         </div>
     </nav>
-    
 
-<partial name="_CookieConsentPartial" />
+
+    <partial name="_CookieConsentPartial" />
 
     <div class="container body-content">
         @RenderBody()

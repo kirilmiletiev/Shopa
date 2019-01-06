@@ -115,6 +115,7 @@ namespace Shopa.Web.Controllers
             {
                 return NotFound();
             }
+
             return View(product);
         }
 
@@ -124,7 +125,7 @@ namespace Shopa.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit(int id, [Bind("Description,Price,TimeOfCreation,PictureLocalPath,Id")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("Description,Price,TimeOfCreation,PictureLocalPath,Id,Category")] Product product)
         {
             if (id != product.Id)
             {
@@ -143,10 +144,6 @@ namespace Shopa.Web.Controllers
                     if (!ProductExists(product.Id))
                     {
                         return NotFound();
-                    }
-                    else
-                    {
-                        throw;
                     }
                 }
                 return RedirectToAction(nameof(Index));

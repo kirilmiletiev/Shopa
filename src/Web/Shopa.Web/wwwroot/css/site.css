@@ -22,8 +22,8 @@ body {
 .carousel-inner .item img[src$=".jpg"] {
     width: 100%;
     max-width: 450px;
-    min-width: 450px;
-    min-height: 450px;
+    min-width: 200px;
+    min-height: 200px;
     max-height: 450px;
 }
 
@@ -33,9 +33,41 @@ body {
 }
 
 /* Hide/rearrange for smaller screens */
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 767px) and (min-width:200px) {
     /* Hide captions */
     .carousel-caption {
         display: none;
     }
+}
+
+.sidenav {
+    height: 100%;            /* Full-height: remove this if you want "auto" height */
+    width: 120px;            /* Set the width of the sidebar */
+    position: fixed;         /* Fixed Sidebar (stay in place on scroll) */
+    z-index: 1;              /* Stay on top */
+    left: 0;                 
+    background-color: #111;  /* Black */
+    overflow-x: hidden;      /* Disable horizontal scroll */
+    padding-top: 50px;
+}
+
+.sidenav a {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 20px;
+    color: #818181;
+    display: block;
+}
+
+.sidenav a:hover {
+    color: #f1f1f1;
+}
+
+@media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+}
+.main {
+    margin-left: 160px; /* Same as the width of the sidebar */
+    padding: 1px 10px;
 }

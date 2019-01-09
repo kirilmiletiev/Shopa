@@ -240,28 +240,31 @@ namespace Shopa.Web.Controllers
             {
 
                 var user = _userManager.GetUserAsync(this.User).GetAwaiter().GetResult();
-                if (!user.Orders.Any())
+                //if (!user.Orders.Any())
+                //{
+                OrderProduct orderProduct = new OrderProduct()
                 {
-                    OrderProduct orderProduct = new OrderProduct()
-                    {
-                        Product = product,
-                        Quantity = quantity
-                    };
+                    Product = product,
+                    Quantity = quantity
+                };
 
-                    var order = PrepareOrder(product, user);
-                    order.Products.Add(orderProduct);
+                var order = PrepareOrder(product, user);
+                order.Products.Add(orderProduct);
 
-                    var totalPrice = CaltulateOrderTotalPrice(order);
+                var totalPrice = CaltulateOrderTotalPrice(order);
 
-                    order.TotalPrice = totalPrice;
+                order.TotalPrice = totalPrice;
+                //order.User.Id = user.Id;
 
                     user.Orders.Add(order);
-                    await _context.SaveChangesAsync();
-                }
-                else
-                {
-                    user.Products.Add(product);
-                }
+                _context.Orders.Add(order);
+                //    await _context.SaveChangesAsync();
+                ////}
+                ////else
+                ////{
+                //    user.Orders.Add(order);
+                //    _context.Orders.Add(order);
+                ////}
 
                 await _context.SaveChangesAsync();
             }

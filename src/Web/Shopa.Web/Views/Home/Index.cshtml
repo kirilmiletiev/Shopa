@@ -177,13 +177,13 @@
                         @if (!user.Products.Contains(produ))
                         {
                         <a asp-controller="Products" asp-action="AddToFavorite" asp-route-productId="@produ.Id">
-                            <form class="button" style="font-size: 300%" border="2px" colo>&hearts; </form>
+                            <form class="button" style="font-size: 300%" title="Add" border="2px" colo>&hearts; </form>
                         </a>
                         }
                         else
                         {
                         <a asp-controller="Products" asp-action="AddToFavorite" asp-route-productId="@produ.Id">
-                            <form class="button">&#10004</form>
+                            <form class="button" title="Added">&#10004</form>
                         </a>
                         }
 

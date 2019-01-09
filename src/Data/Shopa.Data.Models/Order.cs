@@ -14,6 +14,7 @@ namespace Shopa.Data.Models
             this.Products = new List<OrderProduct>();
             this.Status = OrderStatus.Pending;
             this.TotalPrice = 0;
+            this.TimeOfOrder = DateTime.UtcNow;
         }
 
         [Column(TypeName = "decimal(18,2)")]
@@ -22,11 +23,15 @@ namespace Shopa.Data.Models
         public ICollection<OrderProduct> Products { get; set; }
 
         [Required]
+        public string UserId { get; set; }
         public ShopaUser User { get; set; }
+
 
         [Required]
         public OrderStatus Status { get; set; }
         
         public int? StoreId { get; set; }
+
+        public DateTime TimeOfOrder { get; set; }
     }
 }

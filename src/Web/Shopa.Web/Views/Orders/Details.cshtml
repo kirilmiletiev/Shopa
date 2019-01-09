@@ -1,0 +1,43 @@
+﻿@using Shopa.Data
+@model Shopa.Data.Models.Order
+
+@{
+    ViewData["Title"] = "Details";
+}
+@inject ShopaDbContext _Context;
+<h2>Details</h2>
+
+<div>
+    <h4>Order</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalPrice)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TotalPrice)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TimeOfOrder)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TimeOfOrder)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.User)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => _Context.Users.FirstOrDefault(x=>x.Id == model.UserId).UserName)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

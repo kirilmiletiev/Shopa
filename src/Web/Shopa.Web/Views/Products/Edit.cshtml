@@ -3,7 +3,6 @@
 
 @{
     ViewData["Title"] = "Edit";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Edit</h2>
@@ -25,19 +24,14 @@
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="TimeOfCreation" class="control-label"></label>
-                <input asp-for="TimeOfCreation" class="form-control" />
-                <span asp-validation-for="TimeOfCreation" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PictureLocalPath" class="control-label"></label>
-                <input asp-for="PictureLocalPath" class="form-control" />
+                <label asp-for="PictureLocalPath"></label>
+                <input asp-for="PictureLocalPath" type="file" class="form-control"/>
                 <span asp-validation-for="PictureLocalPath" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Category">Select Category:</label><br />
-                <select name="Category" asp-items="Html.GetEnumSelectList<Category>()"></select><br />
-                <span asp-validation-for="Category" class="text-danger" />
+                <select name="Category" asp-items="Html.GetEnumSelectList<Category>()"></select>
+                <span asp-validation-for="Category" class="text-danger"></span>
             </div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">

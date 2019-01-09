@@ -27,8 +27,8 @@ namespace Shopa.Data.Models
 
         public ICollection<Review> Reviews { get; set; }
 
+
         public string PicturePath { get; set; }
-        //public Product Product { get; set; }
 
 
     }

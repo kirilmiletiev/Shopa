@@ -1,50 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using Shopa.Data;
 using Shopa.Data.Models;
 using Shopa.Data.Models.Enums;
+using Shopa.Web.Services;
 
 namespace Shopa.Web.Controllers
 {
     public class ProductsController : Controller
     {
         private readonly ShopaDbContext _context;
-        private UserManager<ShopaUser> userManager;
+        private UserManager<ShopaUser> _userManager;
 
         public ProductsController(ShopaDbContext context, UserManager<ShopaUser> userManager)
         {
             _context = context;
-            this.userManager = userManager;
+            _userManager = userManager;
         }
 
         // GET: Products
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Products.ToListAsync());
         }
-            
-        public async Task<IActionResult> GetAllProductsByCategories(Category category)
-        {
-            return View(await _context.Products.Where(x => x.Category == category).ToListAsync());
-        }
 
-
-        public async Task<IActionResult> GetAllProducts()
-        {
-            return View(await _context.Products.ToListAsync());
-        }
-
-        // GET: Products/Details/
-        [AllowAnonymous]
+        // GET: Products/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -63,7 +50,6 @@ namespace Shopa.Web.Controllers
         }
 
         // GET: Products/Create
-        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
@@ -74,8 +60,7 @@ namespace Shopa.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Create([Bind("Description,Price,TimeOfCreation,PictureLocalPath,Id, Category, User")] Product product)
+        public async Task<IActionResult> Create([Bind("Description,Price,PictureLocalPath,Category,Id")] Product product)
         {
             if (ModelState.IsValid)
             {
@@ -104,7 +89,9 @@ namespace Shopa.Web.Controllers
                 result = Reverse(str);
                 result.Replace('/', '\\');
                 product.PictureLocalPath = result;
-                product.User = this.userManager.GetUserAsync(this.User).GetAwaiter().GetResult();
+                var user = this._userManager.GetUserAsync(this.User).GetAwaiter().GetResult();
+                product.User = user;
+                user.Products.Add(product);
 
                 _context.Add(product);
                 await _context.SaveChangesAsync();
@@ -114,7 +101,6 @@ namespace Shopa.Web.Controllers
         }
 
         // GET: Products/Edit/5
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -127,7 +113,6 @@ namespace Shopa.Web.Controllers
             {
                 return NotFound();
             }
-
             return View(product);
         }
 
@@ -136,8 +121,7 @@ namespace Shopa.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit(int id, [Bind("Description,Price,TimeOfCreation,PictureLocalPath,Id,Category")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("Description,Price,TimeOfCreation,PictureLocalPath,StoreId,Category,Id, ")] Product product)
         {
             if (id != product.Id)
             {
@@ -157,6 +141,10 @@ namespace Shopa.Web.Controllers
                     {
                         return NotFound();
                     }
+                    else
+                    {
+                        throw;
+                    }
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -164,7 +152,6 @@ namespace Shopa.Web.Controllers
         }
 
         // GET: Products/Delete/5
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -182,9 +169,7 @@ namespace Shopa.Web.Controllers
             return View(product);
         }
 
-
         // POST: Products/Delete/5
-        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -199,13 +184,121 @@ namespace Shopa.Web.Controllers
         {
             return _context.Products.Any(e => e.Id == id);
         }
-
         private static string Reverse(string result)
         {
             char[] charArray = result.ToCharArray();
             Array.Reverse(charArray);
             return new string(charArray);
         }
-    }
 
+        public async Task<IActionResult> GetAllProductsByCategories(Category category)
+        {
+            return View(await _context.Products.Where(x => x.Category == category).ToListAsync());
+        }
+
+
+        public async Task<IActionResult> GetAllProducts()
+        {
+            return View(await _context.Products.ToListAsync());
+        }
+
+        public async Task<IActionResult> AddToFavorite(int productId)
+        {
+            var product = _context.Products.FirstOrDefault(x => x.Id == productId);
+            if (product != null && !product.Equals(null))
+            {
+
+                var user = _userManager.GetUserAsync(this.User).GetAwaiter().GetResult();
+                if (user.Products.Contains(product))
+                {
+                    user.Products.Remove(product);
+                }
+                else
+                {
+                    user.Products.Add(product);
+                }
+
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> GetQuantityIfOrderedProduct(int quantity)
+        {
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> AddToCart(int productId, int quantity)
+        {
+            var product = _context.Products.FirstOrDefault(x => x.Id == productId);
+            if (product != null && !product.Equals(null))
+            {
+
+                var user = _userManager.GetUserAsync(this.User).GetAwaiter().GetResult();
+                if (!user.Orders.Any())
+                {
+                    OrderProduct orderProduct = new OrderProduct()
+                    {
+                        Product = product,
+                        Quantity = quantity
+                    };
+
+                    var order = PrepareOrder(product, user);
+                    order.Products.Add(orderProduct);
+
+                    var totalPrice = CaltulateOrderTotalPrice(order);
+
+                    order.TotalPrice = totalPrice;
+
+                    user.Orders.Add(order);
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    user.Products.Add(product);
+                }
+
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        private decimal CaltulateOrderTotalPrice(Order order)
+        {
+            decimal result = 0;
+            foreach (var product in order.Products)
+            {
+                var pricePerProduct = product.Product.Price;
+                var quantity = product.Quantity;
+                var total = pricePerProduct * quantity;
+
+                result += total;
+            }
+
+            return result;
+        }
+
+        private Order PrepareOrder(Product product, ShopaUser user)
+        {
+            Order order = new Order()
+            {
+                User = user,
+                Products = new List<OrderProduct>()
+                {
+
+                }
+            };
+            return order;
+        }
+    }
 }

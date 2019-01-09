@@ -1,41 +1,166 @@
-﻿@page
+﻿@inject IHomeService HomeService
+@using System.Linq
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.EntityFrameworkCore
 @using Shopa.Data
-@using Shopa.Web.Services
+@using Shopa.Data.Models
+@using Shopa.Data.Models.Enums
 @using Shopa.Web.Services.Contracts
 @model Shopa.Data.Models.Product
-@inject IHomeService HomeService
+@inject UserManager<ShopaUser> _UserManager;
+@inject ShopaDbContext _Context
+
 @{
-    //ViewData["Title"] = "Details";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Details";
 }
+
+
+@{var prod = Html.ViewData.Model;}
+@{
+    var user = _UserManager.GetUserAsync(this.User).GetAwaiter().GetResult();
+}
+@{ var isAuthenticated = User.Identity.IsAuthenticated;}
+
+<h2>Details</h2>
+
 <div>
-    <div >
+    <div>
         <h3>Products List</h3>
         <table class="table-bordered col-lg-12">
             <tr>
-                <th>Id</th>
-                <th>Category</th>
-                <th>Photo</th>
-                <th>Price</th>
-                <th>Description</th>
+                @if (isAuthenticated)
+                {
+                    <th style="text-align: center">Add To Favorites</th>
+                }
+                <th style="text-align: center">Id</th>
+                <th style="text-align: center">Category</th>
+                <th style="text-align: center">Photo</th>
+                <th style="text-align: center">Price</th>
+                <th style="text-align: center">Description</th>
+                @if (isAuthenticated)
+                {
+                    <th style="text-align: center">Quantity</th>
+                }
+                @*<th style="text-align: center">Add To Cart</th>*@
+
             </tr>
-            @foreach (var product in HomeService.GetAllProducts().ToList())
-            {
-                <tr>
-                    <td>@product.Id</td>
-                    <td>@product.Category</td>
-                    <td><img src="/@product.PictureLocalPath" width="60" alt="pic" /></td>
-                    <td>@product.Price</td>
-                    <td>@product.Description</td>
-                </tr>
-            }
+
+            <tr style="text-align: center">
+                @if (isAuthenticated)
+                {
+                    <td>
+                        @if (!user.Products.Contains(prod))
+                        {
+                        <a asp-controller="Products" asp-action="AddToFavorite" asp-route-productId="@prod.Id">
+                            <form class="button" style="font-size: 300%" border="2px" colo>&hearts; </form>
+                        </a>
+                        @*<p class="button">I <span style="font-size:500%;color:red;">&hearts;</span> nature!</p>*@
+                        }
+                        else
+                        {
+                        <a asp-controller="Products" asp-action="AddToFavorite" asp-route-productId="@prod.Id">
+                            <form class="button">&#10004</form>
+                        </a>
+                        }
+                    </td>
+                }
+
+                <td>@prod.Id</td>
+                <td>@prod.Category</td>
+                <td><img src="/@prod.PictureLocalPath" width="60" alt="pic" /></td>
+                <td>@prod.Price</td>
+                <td>@prod.Description</td>
+                @if (isAuthenticated)
+                {
+                    <td>
+                        <div class="form-group">
+                            <form class="button" style="color: black" asp-controller="Products" asp-action="AddToCart" asp-route-productId="@prod.Id">
+                                <input type="number" name="quantity" min="1" max="100" value="1">
+                                <input type="submit" value="&#x1F6D2">
+                            </form>
+
+                        </div>
+                    </td>
+                }
+            </tr>
         </table>
-        <br/>
+        <br />
     </div>
-    <hr/>
+    <hr />
     <br />
     <p>
         <a class="text-left" asp-controller="Home" asp-action="Index">Back to List</a>
     </p>
 </div>
+<hr />
 
+
+@*ALL PRODUCTS*@
+<h3> See all products in this @Model.Category</h3>
+<table class="table">
+    <thead>
+        <tr>
+            @if (isAuthenticated)
+            {
+                <th style="text-align: center">Add To Favorites</th>
+            }
+            <th style="text-align: center">Id</th>
+            <th style="text-align: center">Category</th>
+            <th style="text-align: center">Photo</th>
+            <th style="text-align: center">Price</th>
+            <th style="text-align: center">Description</th>
+            <th style="text-align: center">Quantity</th>
+            @if (isAuthenticated)
+            {
+                <th style="text-align: center">Details</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var produ in _Context.Products.OrderBy(x => x.Category).Where(x => x.Category == Model.Category).ToList())
+        {
+            <tr style="text-align: center">
+                @if (isAuthenticated)
+                {
+                    <td>
+                        @if (!user.Products.Contains(produ))
+                        {
+                        <a asp-controller="Products" asp-action="AddToFavorite" asp-route-productId="@produ.Id">
+                            <form class="button" style="font-size: 300%" border="2px" colo>&hearts; </form>
+                        </a>
+                        }
+                        else
+                        {
+                        <a asp-controller="Products" asp-action="AddToFavorite" asp-route-productId="@produ.Id">
+                            <form class="button">&#10004</form>
+                        </a>
+                        }
+                    </td>
+                }
+                <td>@produ.Id</td>
+                <td>@produ.Category</td>
+                <td><img src="/@produ.PictureLocalPath" width="60" alt="pic" /></td>
+                <td>@produ.Price</td>
+                <td>@produ.Description</td>
+                @if (isAuthenticated)
+                {
+                    <td>
+                        <div class="form-group">
+                            <form class="button" style="color: black" asp-controller="Products" asp-action="AddToCart" asp-route-productId="@produ.Id">
+                                <input type="number" name="quantity" min="1" max="100" value="1">
+                                <input type="submit" value="&#x1F6D2">
+                            </form>
+
+                        </div>
+                    </td>
+                }
+
+                <td>
+                    <a asp-controller="Products" asp-action="Details" asp-route-id="@produ.Id">See Details</a>
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+@*ALL PRODUCTS*@

@@ -25,12 +25,15 @@ namespace Shopa.Data
 
         public DbSet<Review> Reviews { get; set; }
 
+        public DbSet<OrderProduct> OrderProducts { get; set; }
+
 
 
 
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            //builder.Entity<OrderProduct>().HasKey(x => new {x.OrderId, x.ProductId});
             //builder.Entity<Store>().HasKey(k=>k.)
             base.OnModelCreating(builder);
             // Customize the ASP.NET Identity model and override the defaults if needed.

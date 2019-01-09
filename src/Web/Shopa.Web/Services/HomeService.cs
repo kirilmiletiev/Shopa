@@ -58,8 +58,8 @@ namespace Shopa.Web.Services
         {
             Random rnd = new Random();
 
-            //int productId = rnd.Next(0, context.Products.Count());
-            int productId = rnd.Next(22, GetAllProducts().Count + 22);
+            int productId = rnd.Next(2, context.Products.Count()+2);
+            //int productId = rnd.Next(22, GetAllProducts().Count + 22);
 
             Product product = GetProductById(productId);
             return product;

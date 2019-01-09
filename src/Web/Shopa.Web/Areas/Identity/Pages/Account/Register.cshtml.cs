@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -20,17 +21,20 @@ namespace Shopa.Web.Areas.Identity.Pages.Account
         private readonly UserManager<ShopaUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private RoleManager<IdentityRole> _roleManager;
 
         public RegisterModel(
             UserManager<ShopaUser> userManager,
             SignInManager<ShopaUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _roleManager = roleManager;
         }
 
         [BindProperty]
@@ -76,10 +80,14 @@ namespace Shopa.Web.Areas.Identity.Pages.Account
             returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
-                var user = new ShopaUser { UserName = Input.Email, Email = Input.Email, Address = Input.Address, PhoneNumber = Input.PhoneNumber};
+                var user = new ShopaUser { UserName = Input.Email, Email = Input.Email, Address = Input.Address, PhoneNumber = Input.PhoneNumber };
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
+                    //set Role
+                    await SetRoleToUser(user);
+
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -103,6 +111,46 @@ namespace Shopa.Web.Areas.Identity.Pages.Account
 
             // If we got this far, something failed, redisplay form
             return Page();
+        }
+
+        // Add Role to every User
+        private async Task SetRoleToUser(ShopaUser user)
+        {
+            var x = await _roleManager.RoleExistsAsync("Admin");
+            if (!x)
+            {
+                // first we create Admin role of FirstUser (TEST)    
+                var roleAdmin = new IdentityRole("Admin");
+                await _roleManager.CreateAsync(roleAdmin);
+                await _userManager.AddToRoleAsync(user, "Admin");
+            }
+            else
+            {
+                //then in second registration we seed other roles
+                var y = await _roleManager.RoleExistsAsync("Seller");
+                if (!y)
+                {
+                    var role = new IdentityRole("Seller");
+                    await _roleManager.CreateAsync(role);
+                }
+
+
+                var z = await _roleManager.RoleExistsAsync("User");
+                if (!z)
+                {
+                    var role = new IdentityRole("User");
+                    await _roleManager.CreateAsync(role);
+                }
+
+                if (user.Products.Count > 5 && !this.User.IsInRole("Admin"))
+                {
+                    await _userManager.AddToRoleAsync(user, "Seller");
+                }
+                else if (!this.User.IsInRole("Admin"))
+                {
+                    await _userManager.AddToRoleAsync(user, "User");
+                }
+            }
         }
     }
 }

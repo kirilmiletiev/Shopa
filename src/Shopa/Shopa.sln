@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shopa.Data", "..\Data\Shopa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shopa.Data.Models", "..\Data\Shopa.Data.Models\Shopa.Data.Models.csproj", "{FA87473E-0C73-4303-ABD2-5DD53BA39FB5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shopa.Data.ViewModels", "Shopa.Data.ViewModels\Shopa.Data.ViewModels.csproj", "{3235D92D-7AFE-4BA3-9E87-B22EC5477D10}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{FA87473E-0C73-4303-ABD2-5DD53BA39FB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA87473E-0C73-4303-ABD2-5DD53BA39FB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA87473E-0C73-4303-ABD2-5DD53BA39FB5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3235D92D-7AFE-4BA3-9E87-B22EC5477D10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3235D92D-7AFE-4BA3-9E87-B22EC5477D10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3235D92D-7AFE-4BA3-9E87-B22EC5477D10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3235D92D-7AFE-4BA3-9E87-B22EC5477D10}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -36,6 +42,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{072190F0-4673-4EC7-BD9A-86C2FE71CB89} = {DF75DD99-173E-44F0-866D-AD32C321AE8A}
 		{FA87473E-0C73-4303-ABD2-5DD53BA39FB5} = {DF75DD99-173E-44F0-866D-AD32C321AE8A}
+		{3235D92D-7AFE-4BA3-9E87-B22EC5477D10} = {DF75DD99-173E-44F0-866D-AD32C321AE8A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DE403DA9-F10B-49EB-9F65-C0A840131E9B}

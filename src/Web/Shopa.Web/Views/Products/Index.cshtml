@@ -1,8 +1,11 @@
-﻿@model IEnumerable<Shopa.Data.Models.Product>
+﻿@using Microsoft.AspNetCore.Identity
+@using Shopa.Data.Models
+@model IEnumerable<Shopa.Data.Models.Product>
+@inject UserManager<ShopaUser> _UserManager
+@inject RoleManager<IdentityRole> _RoleManager
 
 @{
     ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Index</h2>
@@ -12,27 +15,31 @@
 </p>
 <table class="table">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TimeOfCreation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PictureLocalPath)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Category)
-            </th>
-            <th></th>
-        </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TimeOfCreation)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PictureLocalPath)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Category)
+        </th>
+        @{ bool isAdmin = this.User.IsInRole("Admin");}
+        @if (isAdmin)
+        {
+            <th> Admin tools</th>
+        }
+    </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+    @foreach (var item in Model) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
@@ -45,18 +52,21 @@
             </td>
             <td>
                 @*@Html.DisplayFor(modelItem => item.PictureLocalPath)*@
-                <img src="@item.PictureLocalPath" alt="pic" width="150" height="150"/>
+                <img src="/@item.PictureLocalPath" alt="pic" width="150" height="150"/>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Category)
             </td>
-
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
+            @if (isAdmin)
+            {
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            }
+            
         </tr>
-}
+    }
     </tbody>
 </table>

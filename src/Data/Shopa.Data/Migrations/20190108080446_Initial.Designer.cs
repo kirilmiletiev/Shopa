@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shopa.Data;
 
 namespace Shopa.Data.Migrations
 {
     [DbContext(typeof(ShopaDbContext))]
-    partial class ShopaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190108080446_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -210,9 +212,14 @@ namespace Shopa.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<bool>("AdminApproved");
+
                     b.Property<int>("Category");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .IsRequired();
+
+                    b.Property<bool>("IsActual");
 
                     b.Property<string>("PictureLocalPath");
 
@@ -223,7 +230,8 @@ namespace Shopa.Data.Migrations
 
                     b.Property<DateTime>("TimeOfCreation");
 
-                    b.Property<string>("UserId");
+                    b.Property<string>("UserId")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -420,7 +428,7 @@ namespace Shopa.Data.Migrations
 
             modelBuilder.Entity("Shopa.Data.Models.OrderProduct", b =>
                 {
-                    b.HasOne("Shopa.Data.Models.Order")
+                    b.HasOne("Shopa.Data.Models.Order", "Order")
                         .WithMany("Products")
                         .HasForeignKey("OrderId");
 
@@ -437,7 +445,8 @@ namespace Shopa.Data.Migrations
 
                     b.HasOne("Shopa.Data.Models.ShopaUser", "User")
                         .WithMany("Products")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Shopa.Data.Models.Quantity", b =>

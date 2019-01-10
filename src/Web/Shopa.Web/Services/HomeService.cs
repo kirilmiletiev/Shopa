@@ -17,6 +17,7 @@ namespace Shopa.Web.Services
         {
             this.context = context;
         }
+        
 
         public List<Product> GetAllProducts()
         {
@@ -60,6 +61,10 @@ namespace Shopa.Web.Services
 
             int productId = rnd.Next(2, context.Products.Count()+2);
             //int productId = rnd.Next(22, GetAllProducts().Count + 22);
+            if (productId == 12)
+            {
+                productId = 13; // Fail to add product with ID 12 ;
+            }
 
             Product product = GetProductById(productId);
             return product;

@@ -1,0 +1,31 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Shopa.Data
+@using Shopa.Data.Models
+@model Microsoft.EntityFrameworkCore.DbSet<Shopa.Data.Models.Favorite>
+@inject ShopaDbContext _Context;
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+@inject UserManager<ShopaUser> _UserManager;
+@{ var currentUser = _UserManager.GetUserAsync(this.User).GetAwaiter().GetResult();}
+
+
+
+<h2>Hi from FAVORITE</h2>
+
+
+
+@foreach (var fav in Model.ToList())
+{
+    var favoriteUser = _Context.Favorites.Select(x => x.ShopaUser).FirstOrDefault(x => x.Id == fav.ShopaUserId);
+    if (favoriteUser != null)
+    {
+        var productFromContext = _Context.Products.FirstOrDefault(x => x.Id == fav.ProductId);
+        if (productFromContext != null)
+        {
+            <h4>@favoriteUser.UserName : @productFromContext.Description  : @fav.IsActive</h4>
+        }
+    }
+
+}

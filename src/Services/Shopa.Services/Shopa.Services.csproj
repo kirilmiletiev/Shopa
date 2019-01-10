@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Data\Shopa.Data.ViewModels\Shopa.Data.ViewModels.csproj" />
+    <ProjectReference Include="..\..\Data\Shopa.Data\Shopa.Data.csproj" />
+  </ItemGroup>
+
+</Project>

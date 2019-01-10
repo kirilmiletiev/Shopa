@@ -16,6 +16,7 @@ namespace Shopa.Data.Models
             this.Products = new List<OrderProduct>();
             this.IsActual = true;
             this.AdminApproved = false;
+            this.Favorites = new List<Favorite>();
             //this.NumberOfOrderedItems = Numbers.One;
         }
 
@@ -47,6 +48,8 @@ namespace Shopa.Data.Models
 
 
         private bool AdminApproved { get; set; }
+
+        public ICollection<Favorite> Favorites { get; set; }
 
         //public Numbers NumberOfOrderedItems { get; set; }
     }

@@ -1,10 +1,9 @@
-﻿@using Shopa.Data
-@model Shopa.Data.Models.Order
+﻿@model Shopa.Data.Models.Order
 
 @{
     ViewData["Title"] = "Details";
 }
-@inject ShopaDbContext _Context;
+
 <h2>Details</h2>
 
 <div>
@@ -28,12 +27,6 @@
         </dt>
         <dd>
             @Html.DisplayFor(model => model.TimeOfOrder)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.User)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => _Context.Users.FirstOrDefault(x=>x.Id == model.UserId).UserName)
         </dd>
     </dl>
 </div>

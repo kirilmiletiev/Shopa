@@ -15,6 +15,7 @@ namespace Shopa.Data.Models
             this.Orders = new List<Order>();
             this.Reviews = new List<Review>();
             this.DateOfRegistration = DateTime.UtcNow;
+            this.Favorites = new List<Favorite>();
         }
 
         public string Address { get; set; }
@@ -26,6 +27,8 @@ namespace Shopa.Data.Models
         public DateTime DateOfRegistration { get; set; }
 
         public ICollection<Review> Reviews { get; set; }
+
+        public ICollection<Favorite> Favorites { get; set; }
 
 
         public string PicturePath { get; set; }

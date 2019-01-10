@@ -10,40 +10,38 @@ using Microsoft.EntityFrameworkCore;
 using Shopa.Data;
 using Shopa.Data.Models;
 using Shopa.Data.Models.Enums;
+using Shopa.Services.Contracts;
 using Shopa.Web.Services;
 
 namespace Shopa.Web.Controllers
 {
     public class ProductsController : Controller
     {
-        private readonly ShopaDbContext _context;
+        //private readonly ShopaDbContext _context;
         private UserManager<ShopaUser> _userManager;
+        private IProductService _productService;
+        private ShopaUser CurrentUser => _userManager.GetUserAsync(this.User).GetAwaiter().GetResult();
 
-        public ProductsController(ShopaDbContext context, UserManager<ShopaUser> userManager)
+        public ProductsController( UserManager<ShopaUser> userManager, IProductService productService)
         {
-            _context = context;
+            //_context = context;
             _userManager = userManager;
+            this._productService = productService;
         }
 
         // GET: Products
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Products.ToListAsync());
+            return View(await _productService.GetAllProductsAsync());
         }
 
         // GET: Products/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var product = await _context.Products
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var product = _productService.GetProductById(id);
             if (product == null)
             {
-                return NotFound();
+                return NotFound(); //TODO: ERROR VIEW
             }
 
             return View(product);
@@ -64,37 +62,11 @@ namespace Shopa.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var path = product.PictureLocalPath;
-                path = path.Replace('\\', '/');
-                string result = "";
-                var count = 0;
-
-                string str = "";
-
-                for (int i = path.Length - 1; i >= 0; i--)
-                {
-                    if (path[i].Equals('/'))
-                    {
-                        count++;
-                    }
-
-                    if (count == 2)
-                    {
-                        break;
-                    }
-
-                    str += (path[i]);
-                }
-
-                result = Reverse(str);
-                result.Replace('/', '\\');
-                product.PictureLocalPath = result;
                 var user = this._userManager.GetUserAsync(this.User).GetAwaiter().GetResult();
                 product.User = user;
                 user.Products.Add(product);
-
-                _context.Add(product);
-                await _context.SaveChangesAsync();
+                _productService.AddProduct(product);
+                _productService.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
             return View(product);
@@ -108,7 +80,8 @@ namespace Shopa.Web.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Products.FindAsync(id);
+            //var product = await _context.Products.FindAsync(id);
+            var product = _productService.GetProductById(id);
             if (product == null)
             {
                 return NotFound();
@@ -132,8 +105,11 @@ namespace Shopa.Web.Controllers
             {
                 try
                 {
-                    _context.Update(product);
-                    await _context.SaveChangesAsync();
+                    //_context.Update(product);
+                    //await _context.SaveChangesAsync();
+                    product.PictureLocalPath = _productService.FixLocalPath(product.PictureLocalPath);
+                    _productService.Update(product);
+                    _productService.SaveChanges();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -159,8 +135,9 @@ namespace Shopa.Web.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Products
-                .FirstOrDefaultAsync(m => m.Id == id);
+            //var product = await _context.Products
+            //    .FirstOrDefaultAsync(m => m.Id == id);
+            var product = _productService.GetProductById(id);
             if (product == null)
             {
                 return NotFound();
@@ -174,68 +151,84 @@ namespace Shopa.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var product = await _context.Products.FindAsync(id);
-            _context.Products.Remove(product);
-            await _context.SaveChangesAsync();
+            //var product = await _context.Products.FindAsync(id);
+            var product = _productService.GetProductById(id);
+
+            _productService.Remove(product);
+            //await _context.SaveChangesAsync();
+            _productService.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ProductExists(int id)
         {
-            return _context.Products.Any(e => e.Id == id);
+            //return _context.Products.Any(e => e.Id == id);
+            return _productService.ProductExists(id);
         }
-        private static string Reverse(string result)
-        {
-            char[] charArray = result.ToCharArray();
-            Array.Reverse(charArray);
-            return new string(charArray);
-        }
-
         public async Task<IActionResult> GetAllProductsByCategories(Category category)
         {
-            return View(await _context.Products.Where(x => x.Category == category).ToListAsync());
+            return View(await _productService.GetAllProductsByCategories(category));
         }
 
 
         public async Task<IActionResult> GetAllProducts()
         {
-            return View(await _context.Products.ToListAsync());
+            return View(await _productService.GetAllProductsAsync());
         }
 
         public async Task<IActionResult> AddToFavorite(int productId)
         {
-            var product = _context.Products.FirstOrDefault(x => x.Id == productId);
-            if (product != null && !product.Equals(null))
+            //var product = _context.Products.FirstOrDefault(x => x.Id == productId);
+            var product = _productService.GetProductById(productId);
+
+            var user = await _userManager.GetUserAsync(this.User);
+
+            if (product != null && !product.Equals(null) && user != null)
             {
+                var isProductInFavorites = _productService.IsProductInFavorites(productId, user.Id);
 
-                var user = _userManager.GetUserAsync(this.User).GetAwaiter().GetResult();
-                if (user.Products.Contains(product))
+                if (isProductInFavorites) // false
                 {
-                    user.Products.Remove(product);
-                }
-                else
-                {
-                    user.Products.Add(product);
+                    var favoriteFromContext = _productService.GetFavorite(productId, user.Id);
+                    if (favoriteFromContext.IsActive == false)
+                    {
+                        favoriteFromContext.IsActive = true;
+                        _productService.SaveChanges();
+                        return  RedirectToAction(nameof(MyFavorites));
+                    }
+                    _productService.RemoveFavorite(favoriteFromContext);
                 }
 
-                await _context.SaveChangesAsync();
+                if (!isProductInFavorites) 
+                {
+                    Favorite favorite = new Favorite()
+                    {
+                        Product = product,
+                        ShopaUser = user,
+                    };
+
+                    _productService.AddFavorite(favorite);
+                }
+
+                _productService.SaveChanges();
+                return RedirectToAction(nameof(MyFavorites));
             }
             else
             {
                 return RedirectToAction(nameof(Index));
             }
-
-            return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> GetQuantityIfOrderedProduct(int quantity)
+        public async Task<IActionResult> MyFavorites()
         {
-            return RedirectToAction(nameof(Index));
+            return View(_productService.GetAllFavorites());
         }
 
         public async Task<IActionResult> AddToCart(int productId, int quantity)
         {
-            var product = _context.Products.FirstOrDefault(x => x.Id == productId);
+            //var product = _context.Products.FirstOrDefault(x => x.Id == productId);
+            var product = _productService.GetProductById(productId);
+
             if (product != null && !product.Equals(null))
             {
 
@@ -256,8 +249,9 @@ namespace Shopa.Web.Controllers
                 order.TotalPrice = totalPrice;
                 //order.User.Id = user.Id;
 
-                    user.Orders.Add(order);
-                _context.Orders.Add(order);
+                user.Orders.Add(order);
+                _productService.AddOrder(order);
+                //_context.Orders.Add(order);
                 //    await _context.SaveChangesAsync();
                 ////}
                 ////else
@@ -266,7 +260,7 @@ namespace Shopa.Web.Controllers
                 //    _context.Orders.Add(order);
                 ////}
 
-                await _context.SaveChangesAsync();
+                 _productService.SaveChanges();
             }
             else
             {

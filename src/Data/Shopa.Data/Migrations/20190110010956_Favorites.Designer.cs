@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shopa.Data;
 
 namespace Shopa.Data.Migrations
 {
     [DbContext(typeof(ShopaDbContext))]
-    partial class ShopaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190110010956_Favorites")]
+    partial class Favorites
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -164,8 +166,6 @@ namespace Shopa.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("IsActive");
-
                     b.Property<int>("ProductId");
 
                     b.Property<string>("ShopaUserId")
@@ -177,7 +177,7 @@ namespace Shopa.Data.Migrations
 
                     b.HasIndex("ShopaUserId");
 
-                    b.ToTable("Favorites");
+                    b.ToTable("Favorite");
                 });
 
             modelBuilder.Entity("Shopa.Data.Models.Order", b =>

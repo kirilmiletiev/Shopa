@@ -13,8 +13,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Data\Shopa.Data.Models\Shopa.Data.Models.csproj" />
+    <ProjectReference Include="..\..\Data\Shopa.Data.ViewModels\Shopa.Data.ViewModels.csproj" />
     <ProjectReference Include="..\..\Data\Shopa.Data\Shopa.Data.csproj" />
-    <ProjectReference Include="..\..\Shopa\Shopa.Data.ViewModels\Shopa.Data.ViewModels.csproj" />
+    <ProjectReference Include="..\..\Services\Shopa.Services\Shopa.Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>

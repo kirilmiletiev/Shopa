@@ -5,11 +5,12 @@
 @using Shopa.Data
 @using Shopa.Data.Models
 @using Shopa.Data.Models.Enums
+@using Shopa.Services.Contracts
 @using Shopa.Web.Services.Contracts
 @model Shopa.Data.Models.Product
 @inject UserManager<ShopaUser> _UserManager;
 @inject ShopaDbContext _Context
-
+@inject IProductService _ProductService;
 @{
     ViewData["Title"] = "Details";
 }
@@ -49,32 +50,40 @@
                 @if (isAuthenticated)
                 {
                     <td>
-                        @if (!user.Products.Contains(prod))
+                        @{ bool isActive = false;}
+
+                        @{ var favorite = _ProductService.GetFavorite(Model.Id, user.Id);}
+
+                        @if (favorite != null)
                         {
-                        <a asp-controller="Products" asp-action="AddToFavorite" asp-route-productId="@prod.Id">
-                            <form class="button" style="font-size: 300%" border="2px" colo>&hearts; </form>
-                        </a>
-                        @*<p class="button">I <span style="font-size:500%;color:red;">&hearts;</span> nature!</p>*@
+                            isActive = _ProductService.IsActive(Model.Id, user.Id);
+                        }
+
+                        @if (!isActive)
+                        {
+                            <a asp-controller="Products" asp-action="AddToFavorite" asp-route-productId="@Model.Id">
+                                <form class="button" style="font-size: 300%" title="Add" border="2px" colo>&hearts; </form>
+                            </a>
                         }
                         else
                         {
-                        <a asp-controller="Products" asp-action="AddToFavorite" asp-route-productId="@prod.Id">
-                            <form class="button">&#10004</form>
-                        </a>
+                            <a asp-controller="Products" asp-action="AddToFavorite" asp-route-productId="@Model.Id">
+                                <form class="button" title="Added">&#10004</form>
+                            </a>
                         }
                     </td>
                 }
 
-                <td>@prod.Id</td>
-                <td>@prod.Category</td>
-                <td><img src="/@prod.PictureLocalPath" width="60" alt="pic" /></td>
-                <td>@prod.Price</td>
-                <td>@prod.Description</td>
+                <td>@Model.Id</td>
+                <td>@Model.Category</td>
+                <td><img src="/@Model.PictureLocalPath" width="60" alt="pic" /></td>
+                <td>@Model.Price</td>
+                <td>@Model.Description</td>
                 @if (isAuthenticated)
                 {
                     <td>
                         <div class="form-group">
-                            <form class="button" style="color: black" asp-controller="Products" asp-action="AddToCart" asp-route-productId="@prod.Id">
+                            <form class="button" style="color: black" asp-controller="Products" asp-action="AddToCart" asp-route-productId="@Model.Id">
                                 <input type="number" name="quantity" min="1" max="100" value="1">
                                 <input type="submit" value="&#x1F6D2">
                             </form>
@@ -117,36 +126,45 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var produ in _Context.Products.OrderBy(x => x.Category).Where(x => x.Category == Model.Category).ToList())
+        @foreach (var product in _Context.Products.OrderBy(x => x.Category).Where(x => x.Category == Model.Category).ToList())
         {
             <tr style="text-align: center">
                 @if (isAuthenticated)
                 {
                     <td>
-                        @if (!user.Products.Contains(produ))
+                        @{ bool isActive = false;}
+
+                        @{ var favorite = _ProductService.GetFavorite(product.Id, user.Id);}
+
+                        @if (favorite != null)
                         {
-                        <a asp-controller="Products" asp-action="AddToFavorite" asp-route-productId="@produ.Id">
-                            <form class="button" style="font-size: 300%" border="2px" colo>&hearts; </form>
-                        </a>
+                            isActive = _ProductService.IsActive(product.Id, user.Id);
+                        }
+
+                        @if (!isActive)
+                        {
+                            <a asp-controller="Products" asp-action="AddToFavorite" asp-route-productId="@product.Id">
+                                <form class="button" style="font-size: 300%" title="Add" border="2px" colo>&hearts; </form>
+                            </a>
                         }
                         else
                         {
-                        <a asp-controller="Products" asp-action="AddToFavorite" asp-route-productId="@produ.Id">
-                            <form class="button">&#10004</form>
-                        </a>
+                            <a asp-controller="Products" asp-action="AddToFavorite" asp-route-productId="@product.Id">
+                                <form class="button" title="Added">&#10004</form>
+                            </a>
                         }
                     </td>
                 }
-                <td>@produ.Id</td>
-                <td>@produ.Category</td>
-                <td><img src="/@produ.PictureLocalPath" width="60" alt="pic" /></td>
-                <td>@produ.Price</td>
-                <td>@produ.Description</td>
+                <td>@product.Id</td>
+                <td>@product.Category</td>
+                <td><img src="/@product.PictureLocalPath" width="60" alt="pic" /></td>
+                <td>@product.Price</td>
+                <td>@product.Description</td>
                 @if (isAuthenticated)
                 {
                     <td>
                         <div class="form-group">
-                            <form class="button" style="color: black" asp-controller="Products" asp-action="AddToCart" asp-route-productId="@produ.Id">
+                            <form class="button" style="color: black" asp-controller="Products" asp-action="AddToCart" asp-route-productId="@product.Id">
                                 <input type="number" name="quantity" min="1" max="100" value="1">
                                 <input type="submit" value="&#x1F6D2">
                             </form>
@@ -156,7 +174,7 @@
                 }
 
                 <td>
-                    <a asp-controller="Products" asp-action="Details" asp-route-id="@produ.Id">See Details</a>
+                    <a asp-controller="Products" asp-action="Details" asp-route-id="@product.Id">See Details</a>
                 </td>
 
             </tr>

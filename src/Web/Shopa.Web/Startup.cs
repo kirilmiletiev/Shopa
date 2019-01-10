@@ -13,6 +13,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Shopa.Data;
 using Shopa.Data.Models;
+using Shopa.Services;
+using Shopa.Services.Contracts;
 using Shopa.Web.Models;
 using Shopa.Web.Services;
 using Shopa.Web.Services.Contracts;
@@ -32,13 +34,15 @@ namespace Shopa.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IHomeService, HomeService>();
+            services.AddScoped<IProductService, ProductService>();
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-            
+
             //services.AddDbContext<ApplicationDbContext>(options =>
             //    options.UseSqlServer(
             //        Configuration.GetConnectionString("DefaultConnection")));
@@ -48,8 +52,8 @@ namespace Shopa.Web
             services.AddDbContext<ShopaDbContext>(options =>
                 options.UseSqlServer(
                     this.Configuration.GetConnectionString("DefaultConnection")));
-            
-           // services.AddDefaultIdentity<>()
+
+            // services.AddDefaultIdentity<>()
 
             services.AddIdentity<ShopaUser, IdentityRole>(options =>
                 {

@@ -17,7 +17,7 @@ namespace Shopa.Web.Services
         {
             this.context = context;
         }
-        
+
 
         public List<Product> GetAllProducts()
         {
@@ -27,7 +27,7 @@ namespace Shopa.Web.Services
 
         public Product GetProductById(int id)
         {
-            if (id >= 0 )
+            if (id >= 0)
             {
 
                 var product = context.Products.FirstOrDefault(x => x.Id == id);
@@ -58,12 +58,20 @@ namespace Shopa.Web.Services
         public Product GetRandomProduct()
         {
             Random rnd = new Random();
+            List<int> failsIdProducts = new List<int>() {0,1,12,15,16};
 
-            int productId = rnd.Next(2, context.Products.Count()+2);
-            //int productId = rnd.Next(22, GetAllProducts().Count + 22);
-            if (productId == 12)
+            int productId = rnd.Next(1, context.Products.Count() + failsIdProducts.Count);
+
+            while (true)
             {
-                productId = 13; // Fail to add product with ID 12 ;
+                if (failsIdProducts.Any(x => x.Equals(productId)))
+                {
+                    productId = rnd.Next(1, context.Products.Count() + failsIdProducts.Count);
+                }
+                else
+                {
+                    break;
+                }
             }
 
             Product product = GetProductById(productId);

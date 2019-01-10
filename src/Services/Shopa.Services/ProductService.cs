@@ -97,7 +97,7 @@ namespace Shopa.Services
 
             _context.Products.Add(product);
 
-            _context.SaveChangesAsync();
+            //_context.SaveChangesAsync();
             return product;
         }
 

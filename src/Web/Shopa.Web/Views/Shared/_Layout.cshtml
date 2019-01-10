@@ -3,6 +3,7 @@
 @inject UserManager<ShopaUser> UserManager
 @inject SignInManager<ShopaUser> SignInManager
 @inject RoleManager<IdentityRole> RoleManager
+@{var currentUser = await UserManager.GetUserAsync(this.User);}
 
 <!DOCTYPE html>
 <html>
@@ -39,16 +40,19 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-                    <li>
-                        <a asp-controller="Products" asp-action="MyFavorites" title=" M Y   F A V O R I T E" style="size: 50px">
-                            My       <i class="button" style="border-radius:80%">&hearts;</i>    Favorites
-                        </a>
-                    </li>
+
+                    @if (currentUser != null)
+                    {
+                        var isSignedIn = this.User.Identity.IsAuthenticated;
+                        <li class="button1" style="border-radius:90%">
+                            <a asp-controller="Products" asp-action="MyFavorites" title=" M Y   F A V O R I T E" style="size: 30px">
+                                My       <i class="button1"  style="font-size: 19px">&hearts;</i>    Favorites
+                            </a>
+                        </li>
+                    }
 
                     @*TEST*@
                     @{
-                        var currentUser = await UserManager.GetUserAsync(this.User);
-
                         if (currentUser != null)
                         {
                             var isSignedIn = this.User.Identity.IsAuthenticated;
@@ -66,18 +70,18 @@
                 </ul>
                 <div>
                     <ul class="nav sidenav">
-                        <li><a asp-controller="Products" asp-action=""></a></li>
+                        <li><a asp-controller="Orders" asp-action=""></a></li>
 
-                        <li><a asp-controller="Products" asp-action="GetAllProductsByCategories" asp-route-category="Clothes">Clothes</a></li>
-                        <li><a asp-controller="Products" asp-action="GetAllProductsByCategories" asp-route-category="Home">Home</a></li>
-                        <li><a asp-controller="Products" asp-action="GetAllProductsByCategories" asp-route-category="Garden">Garden</a></li>
-                        <li><a asp-controller="Products" asp-action="GetAllProductsByCategories" asp-route-category="Jars">Jars</a></li>
-                        <li><a asp-controller="Products" asp-action="GetAllProductsByCategories" asp-route-category="Yarn">Yarn</a></li>
-                        <li><a asp-controller="Products" asp-action="GetAllProductsByCategories" asp-route-category="Electronics">Electronics</a></li>
-                        <li><a asp-controller="Products" asp-action="GetAllProductsByCategories" asp-route-category="AutoProducts">AutoProducts</a></li>
-                        <li><a asp-controller="Products" asp-action="GetAllProductsByCategories" asp-route-category="Shoes">Shoes</a></li>
-                        <li><a asp-controller="Products" asp-action="GetAllProductsByCategories" asp-route-category="Promotions">Promotions</a></li>
-                        <li><a asp-controller="Products" asp-action="GetAllProductsByCategories" asp-route-category="Other">Other</a></li>
+                        <li class="button2"><a asp-controller="Products" asp-action="GetAllProductsByCategories" asp-route-category="Clothes">Clothes</a></li>
+                        <li class="button2"><a asp-controller="Products" asp-action="GetAllProductsByCategories" asp-route-category="Home">Home</a></li>
+                        <li class="button2"><a asp-controller="Products" asp-action="GetAllProductsByCategories" asp-route-category="Garden">Garden</a></li>
+                        <li class="button2"><a asp-controller="Products" asp-action="GetAllProductsByCategories" asp-route-category="Jars">Jars</a></li>
+                        <li class="button2"><a asp-controller="Products" asp-action="GetAllProductsByCategories" asp-route-category="Yarn">Yarn</a></li>
+                        <li class="button2"><a asp-controller="Products" asp-action="GetAllProductsByCategories" asp-route-category="Electronics">Electronics</a></li>
+                        <li class="button2"><a asp-controller="Products" asp-action="GetAllProductsByCategories" asp-route-category="AutoProducts">AutoProducts</a></li>
+                        <li class="button2"><a asp-controller="Products" asp-action="GetAllProductsByCategories" asp-route-category="Shoes">Shoes</a></li>
+                        <li class="button2"><a asp-controller="Products" asp-action="GetAllProductsByCategories" asp-route-category="Promotions">Promotions</a></li>
+                        <li class="button2"><a asp-controller="Products" asp-action="GetAllProductsByCategories" asp-route-category="Other">Other</a></li>
 
                     </ul>
                 </div>

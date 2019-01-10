@@ -1,8 +1,15 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using Shopa.Data
 @using Shopa.Data.Models
+@using Shopa.Services.Contracts
 @model Microsoft.EntityFrameworkCore.DbSet<Shopa.Data.Models.Favorite>
 @inject ShopaDbContext _Context;
+@inject IProductService _ProductService;
+@{ var isAuthenticated = User.Identity.IsAuthenticated;}
+@{
+    var user = _UserManager.GetUserAsync(this.User).GetAwaiter().GetResult();
+}
+
 @{
     ViewBag.Title = "title";
     Layout = "_Layout";
@@ -12,20 +19,122 @@
 
 
 
-<h2>Hi from FAVORITE</h2>
+<h2 style="text-shadow: black">YOUR FAVORITE LIST</h2>
 
+@{ var isUserAdmin = _UserManager.IsInRoleAsync(currentUser, "Admin").GetAwaiter().GetResult();}
 
-
-@foreach (var fav in Model.ToList())
+@if (isUserAdmin)
 {
-    var favoriteUser = _Context.Favorites.Select(x => x.ShopaUser).FirstOrDefault(x => x.Id == fav.ShopaUserId);
-    if (favoriteUser != null)
+    foreach (var fav in Model.ToList())
     {
-        var productFromContext = _Context.Products.FirstOrDefault(x => x.Id == fav.ProductId);
-        if (productFromContext != null)
+        var favoriteUser = _Context.Favorites.Select(x => x.ShopaUser).FirstOrDefault(x => x.Id == fav.ShopaUserId);
+        if (favoriteUser != null)
         {
-            <h4>@favoriteUser.UserName : @productFromContext.Description  : @fav.IsActive</h4>
+            var productFromContext = _Context.Products.FirstOrDefault(x => x.Id == fav.ProductId);
+            if (productFromContext != null)
+            {
+                <h4>@favoriteUser.UserName : @productFromContext.Description  : @fav.IsActive</h4>
+            }
         }
-    }
 
+    }
+}
+
+@{ var myActiveProductsCount = Model.Where(x => x.ShopaUserId == currentUser.Id).Select(x => x.IsActive).Count(); }
+@if (myActiveProductsCount == 0)
+{
+    <img src="/images/Empty.gif" alt="EMPTY" title="N O   P R O D U C T S   F O U N D " />
+
+    <i class="button">
+        <a asp-controller="Home" asp-action="Index" title=" Go Shopping" style="size: 180px">
+              <strong>  G  O  </strong>                           <i class="button" style="border-radius:80%">&hearts;</i>                           <strong>  SHOPPING  </strong>
+        </a>
+    </i>
+
+}
+else
+{
+
+    <table class="table" style="align-content: center">
+        <thead>
+            <tr>
+                @if (isAuthenticated)
+                {
+                    <th style="text-align: center">Add To Favorites</th>
+                }
+                <th style="text-align: center">Id</th>
+                <th style="text-align: center">Category</th>
+                <th style="text-align: center">Photo</th>
+                <th style="text-align: center">Price</th>
+                <th style="text-align: center">Description</th>
+                @if (isAuthenticated)
+                {
+                    <th style="text-align: center">Quantity</th>
+                }
+                <th style="text-align: center">Details</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var fav in Model.ToList())
+            {
+                var favoriteUser = _Context.Favorites.Select(x => x.ShopaUser).FirstOrDefault(x => x.Id == fav.ShopaUserId);
+                if (favoriteUser != null && currentUser.Id == favoriteUser.Id)
+                {
+                    var productFromContext = _Context.Products.FirstOrDefault(x => x.Id == fav.ProductId);
+                    if (productFromContext != null)
+                    {
+                        <tr style="text-align: center">
+
+                            <td>
+                                @{ bool isActive = false;}
+
+                                @{ var favorite = _ProductService.GetFavorite(fav.ProductId, user.Id);}
+
+                                @if (favorite != null)
+                                {
+                                    isActive = _ProductService.IsActive(fav.ProductId, user.Id);
+                                }
+
+                                @if (!isActive)
+                                {
+                                    <a asp-controller="Products" asp-action="AddToFavorite" asp-route-productId="@fav.ProductId">
+                                        <form class="button" style="font-size: 300%" title="Add" border="2px" colo>&hearts; </form>
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a asp-controller="Products" asp-action="AddToFavorite" asp-route-productId="@fav.ProductId">
+                                        <form class="button" title="Added">&#10004</form>
+                                    </a>
+                                }
+                            </td>
+
+                            <td>@productFromContext.Id</td>
+                            <td>@productFromContext.Category</td>
+                            <td><img src="/@productFromContext.PictureLocalPath" width="60" alt="pic" /></td>
+                            <td>@productFromContext.Price</td>
+                            <td>@productFromContext.Description</td>
+
+                            <td>
+                                <div class="form-group">
+                                    <form class="button" style="color: black" asp-controller="Products" asp-action="AddToCart" asp-route-productId="@productFromContext.Id">
+                                        <input type="number" name="quantity" min="1" max="100" value="1">
+                                        <input type="submit" value="&#x1F6D2" style="padding: 1px 1px">
+                                    </form>
+
+                                </div>
+                            </td>
+                            <td>
+                                <a asp-controller="Products" asp-action="Details" asp-route-id="@productFromContext.Id">See Details</a>
+                            </td>
+
+                        </tr>
+                    }
+                }
+            }
+
+
+        </tbody>
+    </table>
 }

@@ -11,7 +11,6 @@ using Shopa.Data;
 using Shopa.Data.Models;
 using Shopa.Data.Models.Enums;
 using Shopa.Services.Contracts;
-using Shopa.Web.Services;
 
 namespace Shopa.Web.Controllers
 {

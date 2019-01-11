@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Shopa.Data.Models;
+using Shopa.Services.Contracts;
 using Shopa.Web.Models;
-using Shopa.Web.Services;
-using Shopa.Web.Services.Contracts;
 
 namespace Shopa.Web.Controllers
 {

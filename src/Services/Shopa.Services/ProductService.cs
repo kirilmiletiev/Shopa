@@ -67,38 +67,27 @@ namespace Shopa.Services
 
         public Product AddProduct(Product product)
         {
-            //var path = product.PictureLocalPath;
-
-            //path = path.Replace('\\', '/');
-            //string result = "";
-            //var count = 0;
-
-            //string str = "";
-
-            //for (int i = path.Length - 1; i >= 0; i--)
-            //{
-            //    if (path[i].Equals('/'))
-            //    {
-            //        count++;
-            //    }
-
-            //    if (count == 2)
-            //    {
-            //        break;
-            //    }
-
-            //    str += (path[i]);
-            //}
-
-            //result = Reverse(str);
-            //result.Replace('/', '\\');
 
             product.PictureLocalPath = FixLocalPath(product.PictureLocalPath);
+            Product prod = new Product()
+            {
+                Description = product.Description,
+                Category = product.Category,
+                Favorites = product.Favorites,
+                PictureLocalPath = product.PictureLocalPath,
+                Price = product.Price,
+                Products = product.Products,
+                Reviews = product.Reviews,
+                StoreId = product.StoreId,
+                TimeOfCreation = product.TimeOfCreation,
+                User = product.User
+                
+            };
 
-            _context.Products.Add(product);
+            _context.Products.Add(prod);
 
             //_context.SaveChangesAsync();
-            return product;
+            return prod;
         }
 
         public void SaveChanges()
@@ -114,6 +103,7 @@ namespace Shopa.Services
         public void Remove(Product product)
         {
             _context.Products.Remove(product);
+            //:TODO: Add id of product in FailList for Home Page!
         }
 
         public string CategoryName(Product product)

@@ -21,25 +21,6 @@
 
 <h2 style="text-shadow: black">YOUR FAVORITE LIST</h2>
 
-@{ var isUserAdmin = _UserManager.IsInRoleAsync(currentUser, "Admin").GetAwaiter().GetResult();}
-
-@if (isUserAdmin)
-{
-    foreach (var fav in Model.ToList())
-    {
-        var favoriteUser = _Context.Favorites.Select(x => x.ShopaUser).FirstOrDefault(x => x.Id == fav.ShopaUserId);
-        if (favoriteUser != null)
-        {
-            var productFromContext = _Context.Products.FirstOrDefault(x => x.Id == fav.ProductId);
-            if (productFromContext != null)
-            {
-                <h4>@favoriteUser.UserName : @productFromContext.Description  : @fav.IsActive</h4>
-            }
-        }
-
-    }
-}
-
 @*@{ var myActiveProductsCount = Model.Where(x => x.ShopaUserId == currentUser.Id).Select(x => x.IsActive).Count(); }*@
 @{ var myActiveProductsCount = Model.Where(x => x.ShopaUserId == currentUser.Id).Any(x => x.IsActive); }
 
@@ -139,4 +120,28 @@ else
 
         </tbody>
     </table>
+}
+<hr/>
+
+<h3>All products added to favorite with users  * Admin(Demo) *</h3>
+<hr/>
+
+@{ var isUserAdmin = _UserManager.IsInRoleAsync(currentUser, "Admin").GetAwaiter().GetResult();}
+
+@if (isUserAdmin)
+{
+    foreach (var fav in Model.ToList())
+    {
+        var favoriteUser = _Context.Favorites.Select(x => x.ShopaUser).FirstOrDefault(x => x.Id == fav.ShopaUserId);
+        if (favoriteUser != null)
+        {
+            var productFromContext = _Context.Products.FirstOrDefault(x => x.Id == fav.ProductId);
+            if (productFromContext != null)
+            {
+                <h4>@favoriteUser.UserName : @productFromContext.Description  : @fav.IsActive</h4>
+            }
+        }
+        <hr/>
+
+    }
 }

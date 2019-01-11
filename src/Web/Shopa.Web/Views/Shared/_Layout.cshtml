@@ -33,7 +33,14 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Shopa.Web</a>
+
+                @if (this.User.Identity.IsAuthenticated)
+                {
+                    <i class="button1" style="border-radius:90%">
+                        <a asp-area="" asp-controller="Products" asp-action="MyFavorites" class="navbar-brand" style="font-size: 12px">F A V  &hearts; R I T E S </a>
+                    </i>
+                }
+
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -41,15 +48,15 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
 
-                    @if (currentUser != null)
-                    {
-                        var isSignedIn = this.User.Identity.IsAuthenticated;
-                        <li class="button1" style="border-radius:90%">
-                            <a asp-controller="Products" asp-action="MyFavorites" title=" M Y   F A V O R I T E" style="size: 30px">
-                                My       <i class="button1"  style="font-size: 19px">&hearts;</i>    Favorites
-                            </a>
-                        </li>
-                    }
+                    @*@if (currentUser != null)
+                        {
+                            var isSignedIn = this.User.Identity.IsAuthenticated;
+                            <li class="button1" style="border-radius:90%">
+                                <a asp-controller="Products" asp-action="MyFavorites" title=" M Y   F A V O R I T E" style="size: 30px">
+                                    My       <i class="button1"  style="font-size: 19px">&hearts;</i>    Favorites
+                                </a>
+                            </li>
+                        }*@
 
                     @*TEST*@
                     @{

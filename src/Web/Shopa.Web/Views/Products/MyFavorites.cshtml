@@ -40,14 +40,16 @@
     }
 }
 
-@{ var myActiveProductsCount = Model.Where(x => x.ShopaUserId == currentUser.Id).Select(x => x.IsActive).Count(); }
-@if (myActiveProductsCount == 0)
+@*@{ var myActiveProductsCount = Model.Where(x => x.ShopaUserId == currentUser.Id).Select(x => x.IsActive).Count(); }*@
+@{ var myActiveProductsCount = Model.Where(x => x.ShopaUserId == currentUser.Id).Any(x => x.IsActive); }
+
+@if (!myActiveProductsCount)
 {
     <img src="/images/Empty.gif" alt="EMPTY" title="N O   P R O D U C T S   F O U N D " />
 
     <i class="button">
         <a asp-controller="Home" asp-action="Index" title=" Go Shopping" style="size: 180px">
-              <strong>  G  O  </strong>                           <i class="button" style="border-radius:80%">&hearts;</i>                           <strong>  SHOPPING  </strong>
+            <strong>  G  O  </strong>                           <i class="button" style="border-radius:80%">&hearts;</i>                           <strong>  SHOPPING  </strong>
         </a>
     </i>
 
@@ -76,7 +78,7 @@ else
         </thead>
         <tbody>
 
-            @foreach (var fav in Model.ToList())
+            @foreach (var fav in Model.ToList().Where(x => x.IsActive.Equals(true)))
             {
                 var favoriteUser = _Context.Favorites.Select(x => x.ShopaUser).FirstOrDefault(x => x.Id == fav.ShopaUserId);
                 if (favoriteUser != null && currentUser.Id == favoriteUser.Id)

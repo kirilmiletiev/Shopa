@@ -52,7 +52,7 @@
 
                             @if (favorite != null)
                             {
-                                isActive = _ProductService.IsActive(product.Id, user.Id);
+                                isActive = _ProductService.IsActive(favorite.ProductId, favorite.ShopaUserId);
                             }
 
                             @if (!isActive)

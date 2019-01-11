@@ -56,7 +56,7 @@ namespace Shopa.Services
         public Product GetRandomProduct()
         {
             Random rnd = new Random();
-            List<int> failsIdProducts = new List<int>() { 0, 1, 12, 15, 16, 18, 20, 21, 23, 25, 27, 28, 29, 30 };
+            List<int> failsIdProducts = new List<int>() { 0, 1, 12, 15, 16, 18, 20, 21, 23, 25, 27, 28, 29, 30, 33 };
 
             int productId = rnd.Next(1, context.Products.Count() + failsIdProducts.Count);
 

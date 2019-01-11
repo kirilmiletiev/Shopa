@@ -36,9 +36,12 @@
 
                 @if (this.User.Identity.IsAuthenticated)
                 {
-                    <i class="button1" style="border-radius:90%">
-                        <a asp-area="" asp-controller="Products" asp-action="MyFavorites" class="navbar-brand" style="font-size: 12px">F A V  &hearts; R I T E S </a>
+                    <i class="navbar-brand" style="font-size: 12px">
+                        <a asp-area="" asp-controller="Products" asp-action="MyFavorites" class="button1" style="border-radius:90%">&hearts; </a>
                     </i>
+                    @*<i class="button1" style="border-radius:90%">
+                <a asp-area="" asp-controller="Products" asp-action="MyFavorites" class="navbar-brand" style="font-size: 12px">F A V  &hearts; R I T E S </a>
+            </i>*@
                 }
 
             </div>

@@ -19,6 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Order\Data\" />
+    <Folder Include="Areas\Order\Models\" />
     <Folder Include="Pages\" />
     <Folder Include="Views\VIewModels\" />
   </ItemGroup>

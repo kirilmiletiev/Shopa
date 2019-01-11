@@ -7,6 +7,7 @@ using Shopa.Data.Models;
 
 namespace Shopa.Web.Controllers
 {
+    [Area("Order")]
     public class OrdersController : Controller
     {
         private readonly ShopaDbContext _context;

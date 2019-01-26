@@ -4,4 +4,30 @@
 <h2>@ViewData["Title"]</h2>
 <h3>@ViewData["Message"]</h3>
 
+<div id="div1">
+
+</div>
+
 <p>Use this area to provide additional information.</p>
+
+<button class="button1" id="btn">JS</button>
+
+
+<script>
+    let h2Element = document.getElementsByTagName("h2")[0];
+    let btn = document.getElementById("btn").addEventListener("click", Action);
+    let p = document.createElement("p");
+    p.textContent = "Hello from new created <p> element with JS";
+
+         //change style of text color and background color
+   // p.style.backgroundColor = "black";
+   // p.style.color = "purple";
+
+    let div = document.getElementById("div1");
+
+
+    function Action() {
+        h2Element.textContent = "Hello @User.Identity.Name";
+        div.appendChild(p);
+    }
+</script>

@@ -25,4 +25,8 @@
     <Folder Include="Views\VIewModels\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\js\about.js" />
+  </ItemGroup>
+
 </Project>
